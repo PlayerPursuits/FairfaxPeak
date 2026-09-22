@@ -20,7 +20,7 @@ import {
   str,
   type FormState,
 } from "@/lib/forms";
-import { deleteImage, isFile, saveImage, UploadError } from "@/lib/uploads";
+import { countImages, deleteImage, imageFromForm, imagesFromForm, UploadError } from "@/lib/uploads";
 
 async function myBusiness() {
   const user = await requireRole("BUSINESS", "/account/business");
@@ -66,14 +66,13 @@ export async function updateBusinessProfile(_: FormState, fd: FormData): Promise
   const { name, description, website, ...rest } = parsed.data;
 
   let logoUrl: string | undefined;
-  const logo = fd.get("logo");
-  if (isFile(logo)) {
-    try {
-      logoUrl = await saveImage(logo);
-    } catch (e) {
-      if (e instanceof UploadError) return { fieldErrors: { logo: e.message } };
-      throw e;
-    }
+  try {
+    logoUrl = await imageFromForm(fd, "logo");
+  } catch (e) {
+    if (e instanceof UploadError) return { fieldErrors: { logo: e.message } };
+    throw e;
+  }
+  if (logoUrl) {
     await deleteImage(business.logoUrl);
   }
 
@@ -100,24 +99,24 @@ const MAX_GALLERY = 24;
 
 export async function uploadGalleryImages(_: FormState, fd: FormData): Promise<FormState> {
   const { business } = await myBusiness();
-  const files = fd.getAll("images").filter(isFile);
-  if (files.length === 0) return { error: "Choose at least one image." };
+  const incoming = countImages(fd, "images");
+  if (incoming === 0) return { error: "Choose at least one image." };
 
   const count = await db.businessImage.count({ where: { businessId: business.id } });
-  if (count + files.length > MAX_GALLERY) return { error: `Galleries are limited to ${MAX_GALLERY} images.` };
+  if (count + incoming > MAX_GALLERY) return { error: `Galleries are limited to ${MAX_GALLERY} images.` };
 
+  let urls: string[];
   try {
-    let order = count;
-    for (const f of files) {
-      const url = await saveImage(f);
-      await db.businessImage.create({ data: { businessId: business.id, url, sortOrder: order++ } });
-    }
+    urls = await imagesFromForm(fd, "images");
   } catch (e) {
     if (e instanceof UploadError) return { error: e.message };
     throw e;
   }
+  await db.businessImage.createMany({
+    data: urls.map((url, i) => ({ businessId: business.id, url, sortOrder: count + i })),
+  });
   revalidateBusiness(business.slug);
-  return { success: `${files.length} image${files.length > 1 ? "s" : ""} added.` };
+  return { success: `${urls.length} image${urls.length > 1 ? "s" : ""} added.` };
 }
 
 export async function updateGalleryImage(fd: FormData) {

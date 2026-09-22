@@ -6,7 +6,7 @@ import { revalidatePath } from "next/cache";
 import { db } from "@/lib/db";
 import { requireUser } from "@/lib/session";
 import { addressFrom, addressShape, fieldErrors, nullify, optionalText, str, type FormState } from "@/lib/forms";
-import { deleteImage, isFile, saveImage, UploadError } from "@/lib/uploads";
+import { deleteImage, imageFromForm, UploadError } from "@/lib/uploads";
 
 const profileSchema = z.object({
   name: z.string().min(1, "Name is required").max(100),
@@ -34,14 +34,13 @@ export async function updateProfile(_: FormState, fd: FormData): Promise<FormSta
   }
 
   let avatarUrl: string | undefined;
-  const avatar = fd.get("avatar");
-  if (isFile(avatar)) {
-    try {
-      avatarUrl = await saveImage(avatar);
-    } catch (e) {
-      if (e instanceof UploadError) return { fieldErrors: { avatar: e.message } };
-      throw e;
-    }
+  try {
+    avatarUrl = await imageFromForm(fd, "avatar");
+  } catch (e) {
+    if (e instanceof UploadError) return { fieldErrors: { avatar: e.message } };
+    throw e;
+  }
+  if (avatarUrl) {
     const prev = await db.user.findUnique({ where: { id: user.id }, select: { avatarUrl: true } });
     await deleteImage(prev?.avatarUrl);
   }

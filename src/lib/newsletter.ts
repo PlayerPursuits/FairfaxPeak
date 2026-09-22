@@ -1,6 +1,6 @@
 import "server-only";
 import { db } from "./db";
-import { sendMail } from "./email";
+import { emailDeliverable, sendMail } from "./email";
 import { createUnsubscribeToken } from "./tokens";
 import { appUrl, formatDateTime } from "./utils";
 import { liveOfferWhere } from "./community";
@@ -95,6 +95,7 @@ ${section("Upcoming events", events)}
  * within the current window. Safe to call more often than the schedule.
  */
 export async function sendNewsletters(frequency: Frequency, now = new Date()) {
+  if (!emailDeliverable) return { frequency, sent: 0, skipped: "SMTP not configured" };
   const windowMs = (frequency === "DAILY" ? 1 : 7) * 86_400_000 - 60 * 60 * 1000; // 1h slack
   const digest = await buildDigest(frequency, now);
   if (isEmpty(digest)) return { frequency, sent: 0, skipped: "no new content" };

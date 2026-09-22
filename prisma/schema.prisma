@@ -1,13 +1,12 @@
-// Fairfax Peak hyper-local directory.
-// SQLite is used for local development. For production switch `provider` to
-// "postgresql" and point DATABASE_URL at your database.
+// Fairfax Peak hyper-local directory. PostgreSQL in every environment
+// (Neon via the Vercel marketplace in production, Docker locally).
 
 generator client {
   provider = "prisma-client-js"
 }
 
 datasource db {
-  provider = "sqlite"
+  provider = "postgresql"
   url      = env("DATABASE_URL")
 }
 

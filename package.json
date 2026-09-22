@@ -4,20 +4,23 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "prisma generate && next build",
+    "build": "prisma generate && prisma migrate deploy && tsx prisma/seed-base.ts && next build",
     "start": "next start",
     "lint": "next lint",
     "typecheck": "tsc --noEmit",
-    "db:push": "prisma db push",
     "db:seed": "tsx prisma/seed.ts",
-    "db:reset": "prisma db push --force-reset && tsx prisma/seed.ts",
-    "newsletter": "tsx --conditions=react-server scripts/send-newsletter.ts"
+    "db:reset": "prisma migrate reset --force --skip-seed && tsx prisma/seed.ts",
+    "newsletter": "tsx --conditions=react-server scripts/send-newsletter.ts",
+    "postinstall": "prisma generate",
+    "db:migrate": "prisma migrate dev",
+    "db:seed:base": "tsx prisma/seed-base.ts"
   },
   "prisma": {
     "seed": "tsx prisma/seed.ts"
   },
   "dependencies": {
     "@prisma/client": "^6.19.3",
+    "@vercel/blob": "^2.8.0",
     "bcryptjs": "^3.0.3",
     "jose": "^6.2.12",
     "next": "^15.5.26",

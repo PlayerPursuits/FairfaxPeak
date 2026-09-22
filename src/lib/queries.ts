@@ -25,10 +25,10 @@ export async function listBusinesses({ q, category, take, orderBy = "name" }: Bu
       ...(category && { category: { slug: category } }),
       ...(q && {
         OR: [
-          { name: { contains: q } },
-          { tagline: { contains: q } },
-          { description: { contains: q } },
-          { category: { name: { contains: q } } },
+          { name: { contains: q, mode: "insensitive" as const } },
+          { tagline: { contains: q, mode: "insensitive" as const } },
+          { description: { contains: q, mode: "insensitive" as const } },
+          { category: { name: { contains: q, mode: "insensitive" as const } } },
         ],
       }),
     },

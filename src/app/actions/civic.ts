@@ -18,7 +18,7 @@ import {
   str,
   type FormState,
 } from "@/lib/forms";
-import { deleteImage, isFile, saveImage, UploadError } from "@/lib/uploads";
+import { deleteImage, imageFromForm, UploadError } from "@/lib/uploads";
 
 async function myOrg() {
   const user = await requireRole("CIVIC", "/account/civic");
@@ -104,14 +104,13 @@ export async function updateCivicProfile(_: FormState, fd: FormData): Promise<Fo
   const { name, overview, website, ...rest } = parsed.data;
 
   let logoUrl: string | undefined;
-  const logo = fd.get("logo");
-  if (isFile(logo)) {
-    try {
-      logoUrl = await saveImage(logo);
-    } catch (e) {
-      if (e instanceof UploadError) return { fieldErrors: { logo: e.message } };
-      throw e;
-    }
+  try {
+    logoUrl = await imageFromForm(fd, "logo");
+  } catch (e) {
+    if (e instanceof UploadError) return { fieldErrors: { logo: e.message } };
+    throw e;
+  }
+  if (logoUrl) {
     await deleteImage(org.logoUrl);
   }
 

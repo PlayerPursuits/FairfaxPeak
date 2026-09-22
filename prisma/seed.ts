@@ -1,8 +1,10 @@
-// Seeds Fairfax Peak with categories, area content, and fictional demo
-// accounts/listings. All businesses, people, and organizations are made up.
+// DEMO seed: wipes the database and loads fictional accounts and listings.
+// All businesses, people, and organizations are made up. Never run this
+// against production — use seed-base.ts (run automatically on deploy) there.
 import "dotenv/config";
 import { PrismaClient } from "@prisma/client";
 import bcrypt from "bcryptjs";
+import { seedBase, type CategorySlug } from "./seed-base";
 
 const db = new PrismaClient();
 const DAY = 86_400_000;
@@ -13,26 +15,11 @@ const at = (n: number, hour: number, minute = 0) => {
   return d;
 };
 
-const CATEGORIES = [
-  ["automotive", "Automotive", "🚗"],
-  ["medical", "Medical", "🩺"],
-  ["wellness-beauty", "Wellness & Beauty", "💆"],
-  ["home-services", "Home Services", "🔧"],
-  ["restaurants-food", "Restaurants & Food", "🍽️"],
-  ["shopping-retail", "Shopping & Retail", "🛍️"],
-  ["professional-services", "Professional Services", "💼"],
-  ["fitness-recreation", "Fitness & Recreation", "🏃"],
-  ["pets", "Pets", "🐾"],
-  ["education-childcare", "Education & Childcare", "🎒"],
-  ["real-estate", "Real Estate", "🏡"],
-  ["arts-entertainment", "Arts & Entertainment", "🎭"],
-] as const;
-
 type SeedBusiness = {
   owner: string;
   email: string;
   name: string;
-  category: (typeof CATEGORIES)[number][0];
+  category: CategorySlug;
   tagline: string;
   description: string;
   phone: string;
@@ -258,6 +245,13 @@ const REVIEW_TEXT = [
 ] as const;
 
 async function main() {
+  const url = process.env.DATABASE_URL ?? "";
+  const local = /@(localhost|127\.0\.0\.1|postgres)(:|\/)/.test(url);
+  if ((!local || process.env.VERCEL) && !process.argv.includes("--force")) {
+    console.error("Refusing to run the demo seed: it deletes all data and DATABASE_URL is not a local database.");
+    console.error("Pass --force if you really mean it (e.g. for a staging database).");
+    process.exit(1);
+  }
   console.log("Resetting data…");
   await db.$transaction([
     db.offerClaim.deleteMany(),
@@ -275,29 +269,7 @@ async function main() {
     db.community.deleteMany(),
   ]);
 
-  const community = await db.community.create({
-    data: {
-      slug: "fairfax-peak",
-      name: "Fairfax Peak",
-      tagline: "Discover the shops, services, and neighbors that make our mountain town home.",
-      description:
-        "Nestled at the foot of its namesake summit, Fairfax Peak is a close-knit community of trail runners, small-business owners, young families, and lifelong residents.\n\nFrom the Saturday farmers market on the Town Green to sunset hikes up Summit Trail, there's always something happening — and local businesses are at the heart of it all.",
-      highlights: {
-        create: [
-          { title: "Summit Trail", body: "A 3.2-mile loop with panoramic views of the valley. Trailhead parking on Ridgeline Rd.", imageUrl: "/seed/photo-3-0.svg", sortOrder: 0 },
-          { title: "Saturday Farmers Market", body: "Local produce, baked goods, and crafts on the Town Green, 8am–1pm through November.", imageUrl: "/seed/photo-5-1.svg", sortOrder: 1 },
-          { title: "Historic Main Street", body: "Stroll five blocks of locally owned cafés, boutiques, and galleries.", imageUrl: "/seed/photo-1-2.svg", linkUrl: "/directory", sortOrder: 2 },
-          { title: "Community Calendar", body: "Council meetings, festivals, library programs, and volunteer days.", imageUrl: "/seed/photo-2-0.svg", linkUrl: "/events", sortOrder: 3 },
-        ],
-      },
-    },
-  });
-
-  const categories = new Map<string, string>();
-  for (const [i, [slug, name, icon]] of CATEGORIES.entries()) {
-    const c = await db.category.create({ data: { slug, name, icon, sortOrder: i } });
-    categories.set(slug, c.id);
-  }
+  const { community, categories } = await seedBase(db);
 
   const passwordHash = await bcrypt.hash("password123", 10);
   const town = { city: "Fairfax Peak", state: "CO", zip: "80999" };

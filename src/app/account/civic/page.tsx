@@ -6,6 +6,8 @@ import { requireRole } from "@/lib/session";
 import { updateCivicProfile } from "@/app/actions/civic";
 import { ActionForm, Field, SubmitButton } from "@/components/form";
 import { AddressFields } from "@/components/AddressFields";
+import { ImageInput } from "@/components/ImageInput";
+import { blobEnabled } from "@/lib/uploads";
 import { ContactsRepeater } from "@/components/ContactsRepeater";
 import { Notice, Section } from "../Section";
 
@@ -56,7 +58,7 @@ export default async function CivicDashboard({ searchParams }: { searchParams: P
                   "🏛️"
                 )}
               </div>
-              <Field name="logo" label="Logo / seal" type="file" accept="image/*" className="flex-1" />
+              <ImageInput name="logo" label="Logo / seal" direct={blobEnabled} className="flex-1" />
             </div>
             <div className="grid gap-4 sm:grid-cols-2">
               <Field name="name" label="Organization name" defaultValue={org.name} required />

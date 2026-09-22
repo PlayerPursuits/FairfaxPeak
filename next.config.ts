@@ -3,7 +3,8 @@ import type { NextConfig } from "next";
 const nextConfig: NextConfig = {
   experimental: {
     serverActions: {
-      // Gallery and logo uploads go through server actions.
+      // Local-disk uploads go through server actions in development. On Vercel,
+      // images upload directly to Blob storage, so forms stay small.
       bodySizeLimit: "10mb",
     },
   },

@@ -6,6 +6,8 @@ import { changePassword, updateNewsletter, updateProfile } from "@/app/actions/p
 import { deleteReview } from "@/app/actions/reviews";
 import { ActionForm, ConfirmButton, Field, SubmitButton } from "@/components/form";
 import { AddressFields } from "@/components/AddressFields";
+import { ImageInput } from "@/components/ImageInput";
+import { blobEnabled } from "@/lib/uploads";
 import { Stars } from "@/components/Stars";
 import { formatDate } from "@/lib/utils";
 import { Notice, Section } from "./Section";
@@ -42,7 +44,7 @@ export default async function AccountPage({ searchParams }: { searchParams: Prom
                 user.name[0]
               )}
             </div>
-            <Field name="avatar" label="Profile photo" type="file" accept="image/*" className="flex-1" />
+            <ImageInput name="avatar" label="Profile photo" direct={blobEnabled} className="flex-1" />
           </div>
           <div className="grid gap-4 sm:grid-cols-2">
             <Field name="name" label="Name" defaultValue={user.name} required autoComplete="name" />
