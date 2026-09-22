@@ -1,0 +1,230 @@
+// Fairfax Peak hyper-local directory.
+// SQLite is used for local development. For production switch `provider` to
+// "postgresql" and point DATABASE_URL at your database.
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+// A local community ("location"). Fairfax Peak is the first; the model allows
+// more locations to be added later without schema changes.
+model Community {
+  id          String   @id @default(cuid())
+  slug        String   @unique
+  name        String
+  tagline     String
+  description String
+  heroImage   String?
+  createdAt   DateTime @default(now())
+
+  highlights AreaHighlight[]
+  businesses Business[]
+  civicOrgs  CivicOrg[]
+}
+
+// Editorial "about the area" content shown on the home page.
+model AreaHighlight {
+  id          String    @id @default(cuid())
+  communityId String
+  community   Community @relation(fields: [communityId], references: [id], onDelete: Cascade)
+  title       String
+  body        String
+  imageUrl    String?
+  linkUrl     String?
+  sortOrder   Int       @default(0)
+}
+
+// role: PERSONAL | BUSINESS | CIVIC | ADMIN
+// newsletter: NONE | DAILY | WEEKLY
+model User {
+  id               String    @id @default(cuid())
+  email            String    @unique
+  passwordHash     String
+  name             String
+  role             String    @default("PERSONAL")
+  phone            String?
+  street           String?
+  city             String?
+  state            String?
+  zip              String?
+  bio              String?
+  avatarUrl        String?
+  newsletter       String    @default("NONE")
+  lastNewsletterAt DateTime?
+  createdAt        DateTime  @default(now())
+  updatedAt        DateTime  @updatedAt
+
+  business    Business?
+  civicOrg    CivicOrg?
+  reviews     Review[]
+  offerClaims OfferClaim[]
+}
+
+model Category {
+  id         String     @id @default(cuid())
+  slug       String     @unique
+  name       String
+  icon       String     @default("🏪")
+  sortOrder  Int        @default(0)
+  businesses Business[]
+}
+
+// subscriptionStatus: INACTIVE | ACTIVE | PAST_DUE | CANCELED
+// plan: MONTHLY | YEARLY
+// A business is only listed publicly while its subscription is ACTIVE.
+model Business {
+  id                   String    @id @default(cuid())
+  ownerId              String    @unique
+  owner                User      @relation(fields: [ownerId], references: [id], onDelete: Cascade)
+  communityId          String
+  community            Community @relation(fields: [communityId], references: [id])
+  categoryId           String?
+  category             Category? @relation(fields: [categoryId], references: [id], onDelete: SetNull)
+  name                 String
+  slug                 String    @unique
+  tagline              String?
+  description          String    @default("")
+  phone                String?
+  email                String?
+  website              String?
+  street               String?
+  city                 String?
+  state                String?
+  zip                  String?
+  hours                String?
+  logoUrl              String?
+  subscriptionStatus   String    @default("INACTIVE")
+  plan                 String?
+  stripeCustomerId     String?   @unique
+  stripeSubscriptionId String?   @unique
+  currentPeriodEnd     DateTime?
+  createdAt            DateTime  @default(now())
+  updatedAt            DateTime  @updatedAt
+
+  images  BusinessImage[]
+  reviews Review[]
+  offers  Offer[]
+}
+
+model BusinessImage {
+  id         String   @id @default(cuid())
+  businessId String
+  business   Business @relation(fields: [businessId], references: [id], onDelete: Cascade)
+  url        String
+  caption    String?
+  sortOrder  Int      @default(0)
+  createdAt  DateTime @default(now())
+}
+
+model Review {
+  id         String   @id @default(cuid())
+  businessId String
+  business   Business @relation(fields: [businessId], references: [id], onDelete: Cascade)
+  userId     String
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  rating     Int
+  title      String?
+  body       String
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  @@unique([businessId, userId])
+}
+
+// Coupons and special offers. `exclusive` offers are for registered members:
+// anonymous visitors see the offer but must sign in to reveal the code.
+model Offer {
+  id          String    @id @default(cuid())
+  businessId  String
+  business    Business  @relation(fields: [businessId], references: [id], onDelete: Cascade)
+  title       String
+  description String
+  discount    String?
+  code        String?
+  terms       String?
+  exclusive   Boolean   @default(false)
+  startsAt    DateTime  @default(now())
+  endsAt      DateTime?
+  createdAt   DateTime  @default(now())
+
+  claims OfferClaim[]
+}
+
+model OfferClaim {
+  id        String   @id @default(cuid())
+  offerId   String
+  offer     Offer    @relation(fields: [offerId], references: [id], onDelete: Cascade)
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  claimedAt DateTime @default(now())
+
+  @@unique([offerId, userId])
+}
+
+// Civic & local government organizations register for free.
+model CivicOrg {
+  id          String    @id @default(cuid())
+  ownerId     String    @unique
+  owner       User      @relation(fields: [ownerId], references: [id], onDelete: Cascade)
+  communityId String
+  community   Community @relation(fields: [communityId], references: [id])
+  name        String
+  slug        String    @unique
+  orgType     String?
+  overview    String    @default("")
+  website     String?
+  email       String?
+  phone       String?
+  street      String?
+  city        String?
+  state       String?
+  zip         String?
+  logoUrl     String?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  contacts  CivicContact[]
+  events    Event[]
+  resources Resource[]
+}
+
+// Repeater: multiple points of contact per organization.
+model CivicContact {
+  id        String   @id @default(cuid())
+  orgId     String
+  org       CivicOrg @relation(fields: [orgId], references: [id], onDelete: Cascade)
+  name      String
+  title     String?
+  email     String?
+  phone     String?
+  sortOrder Int      @default(0)
+}
+
+model Event {
+  id          String    @id @default(cuid())
+  orgId       String
+  org         CivicOrg  @relation(fields: [orgId], references: [id], onDelete: Cascade)
+  title       String
+  description String
+  location    String?
+  url         String?
+  startsAt    DateTime
+  endsAt      DateTime?
+  createdAt   DateTime  @default(now())
+}
+
+model Resource {
+  id          String   @id @default(cuid())
+  orgId       String
+  org         CivicOrg @relation(fields: [orgId], references: [id], onDelete: Cascade)
+  title       String
+  description String?
+  url         String?
+  category    String?
+  createdAt   DateTime @default(now())
+}
