@@ -11,7 +11,7 @@ function StarPicker({ initial }: { initial: number }) {
   return (
     <fieldset>
       <legend className="label">
-        Your rating<span className="text-clay-500"> *</span>
+        Your rating<span className="text-red-600"> *</span>
       </legend>
       <input type="hidden" name="rating" value={value || ""} />
       <div className="flex gap-1" onMouseLeave={() => setHover(0)}>
@@ -23,7 +23,7 @@ function StarPicker({ initial }: { initial: number }) {
             aria-pressed={value === n}
             onMouseEnter={() => setHover(n)}
             onClick={() => setValue(n)}
-            className={`text-3xl leading-none transition ${(hover || value) >= n ? "text-sun-500" : "text-stone-300"} hover:scale-110`}
+            className={`text-3xl leading-none transition ${(hover || value) >= n ? "text-accent-500" : "text-stone-300"} hover:scale-110`}
           >
             ★
           </button>

@@ -32,9 +32,9 @@ export function OfferCard({
   const locked = offer.exclusive && !claimed;
   return (
     <article className="card flex h-full flex-col overflow-hidden">
-      <div className="flex items-start gap-3 border-b border-dashed border-stone-200 bg-sun-100/60 p-4">
+      <div className="flex items-start gap-3 border-b border-dashed border-stone-200 bg-accent-100/60 p-4">
         {offer.discount && (
-          <span className="shrink-0 rounded-xl bg-sun-400 px-3 py-2 text-center font-display text-lg leading-tight font-bold text-pine-900">
+          <span className="shrink-0 rounded-xl bg-accent-400 px-3 py-2 text-center font-display text-lg leading-tight text-brand-900">
             {offer.discount}
           </span>
         )}
@@ -49,7 +49,7 @@ export function OfferCard({
       </div>
       <div className="flex flex-1 flex-col gap-3 p-4">
         <div className="flex flex-wrap gap-2">
-          {offer.exclusive && <span className="badge bg-pine-700 text-white">★ Members only</span>}
+          {offer.exclusive && <span className="badge bg-brand-700 text-white">★ Members only</span>}
           {offer.business?.category && (
             <span className="badge bg-stone-100 text-stone-700">
               {offer.business.category.icon} {offer.business.category.name}
@@ -67,12 +67,12 @@ export function OfferCard({
               <button className="btn-primary btn-sm w-full">{signedIn ? "Claim offer" : "Sign in to claim"}</button>
             </form>
           ) : offer.code ? (
-            <div className="flex items-center justify-between rounded-xl border-2 border-dashed border-pine-300 bg-pine-50 px-3 py-2">
-              <span className="text-xs font-medium text-pine-700 uppercase">Code</span>
-              <code className="font-mono text-base font-bold tracking-wider text-pine-900">{offer.code}</code>
+            <div className="flex items-center justify-between rounded-xl border-2 border-dashed border-brand-300 bg-brand-50 px-3 py-2">
+              <span className="text-xs font-medium text-brand-700 uppercase">Code</span>
+              <code className="font-mono text-base font-bold tracking-wider text-brand-900">{offer.code}</code>
             </div>
           ) : (
-            <p className="rounded-xl bg-pine-50 px-3 py-2 text-center text-xs font-medium text-pine-800">
+            <p className="rounded-xl bg-brand-50 px-3 py-2 text-center text-xs font-medium text-brand-800">
               {offer.exclusive ? "Claimed — show this page in store" : "Mention Fairfax Peak in store"}
             </p>
           )}

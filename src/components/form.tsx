@@ -62,7 +62,7 @@ function FormMessage() {
     );
   if (state?.success)
     return (
-      <p role="status" className="col-span-full mb-4 rounded-xl border border-pine-200 bg-pine-50 px-4 py-3 text-sm text-pine-800">
+      <p role="status" className="col-span-full mb-4 rounded-xl border border-brand-200 bg-brand-50 px-4 py-3 text-sm text-brand-800">
         {state.success}
       </p>
     );
@@ -116,7 +116,7 @@ export function Field(props: FieldProps) {
     <div className={className}>
       <label htmlFor={id} className="label">
         {label}
-        {required && <span className="text-clay-500"> *</span>}
+        {required && <span className="text-red-600"> *</span>}
       </label>
       {control}
       {hint && !error && (

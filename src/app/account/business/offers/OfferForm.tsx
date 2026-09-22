@@ -30,7 +30,7 @@ export function OfferForm({ offer }: { offer?: Offer }) {
       </div>
       <Field as="textarea" name="terms" label="Terms & conditions" rows={2} defaultValue={offer?.terms ?? ""} placeholder="One per customer. Not valid with other offers." />
       <label className="flex items-start gap-3 rounded-xl border border-stone-200 p-4">
-        <input type="checkbox" name="exclusive" defaultChecked={offer?.exclusive} className="mt-1 h-4 w-4 accent-pine-700" />
+        <input type="checkbox" name="exclusive" defaultChecked={offer?.exclusive} className="mt-1 h-4 w-4 accent-brand-700" />
         <span>
           <span className="block text-sm font-semibold">Members-only offer</span>
           <span className="block text-xs text-stone-600">Only registered Fairfax Peak residents can claim it and see the code.</span>

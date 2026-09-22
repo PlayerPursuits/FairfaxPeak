@@ -35,7 +35,7 @@ export default async function CivicOrgPage({ params }: { params: Promise<{ slug:
     <>
       <section className="border-b border-stone-200 bg-white">
         <div className="container-page flex flex-col gap-6 py-10 sm:flex-row sm:items-center">
-          <div className="flex h-24 w-24 shrink-0 items-center justify-center overflow-hidden rounded-2xl bg-pine-100 text-4xl">
+          <div className="flex h-24 w-24 shrink-0 items-center justify-center overflow-hidden rounded-2xl bg-brand-100 text-4xl">
             {org.logoUrl ? (
               // eslint-disable-next-line @next/next/no-img-element
               <img src={org.logoUrl} alt={`${org.name} logo`} className="h-full w-full object-cover" />
@@ -44,8 +44,8 @@ export default async function CivicOrgPage({ params }: { params: Promise<{ slug:
             )}
           </div>
           <div className="flex-1">
-            <p className="text-sm font-semibold text-pine-600">{org.orgType ?? "Civic organization"}</p>
-            <h1 className="font-display text-4xl font-semibold">{org.name}</h1>
+            <p className="text-sm font-semibold text-brand-600">{org.orgType ?? "Civic organization"}</p>
+            <h1 className="font-display text-4xl">{org.name}</h1>
           </div>
           <div className="flex flex-wrap gap-2">
             {org.website && (
@@ -65,24 +65,24 @@ export default async function CivicOrgPage({ params }: { params: Promise<{ slug:
       <div className="container-page grid gap-10 py-10 lg:grid-cols-3">
         <div className="space-y-12 lg:col-span-2">
           <section>
-            <h2 className="font-display text-2xl font-semibold">Overview</h2>
+            <h2 className="font-display text-2xl">Overview</h2>
             <div className="mt-3 whitespace-pre-line text-stone-700">{org.overview || "No overview yet."}</div>
           </section>
 
           <section>
-            <h2 className="font-display text-2xl font-semibold">Upcoming events</h2>
+            <h2 className="font-display text-2xl">Upcoming events</h2>
             <div className="mt-4 space-y-4">
               {org.events.length ? org.events.map((e) => <EventCard key={e.id} e={e} />) : <p className="text-sm text-stone-600">No upcoming events.</p>}
             </div>
           </section>
 
           <section>
-            <h2 className="font-display text-2xl font-semibold">Resources</h2>
+            <h2 className="font-display text-2xl">Resources</h2>
             {org.resources.length ? (
               <ul className="mt-4 grid gap-3 sm:grid-cols-2">
                 {org.resources.map((r) => (
                   <li key={r.id} className="card p-4">
-                    {r.category && <p className="text-xs font-semibold text-pine-600 uppercase">{r.category}</p>}
+                    {r.category && <p className="text-xs font-semibold text-brand-600 uppercase">{r.category}</p>}
                     <p className="font-semibold">
                       {r.url ? (
                         <a href={r.url} target="_blank" rel="noopener noreferrer">

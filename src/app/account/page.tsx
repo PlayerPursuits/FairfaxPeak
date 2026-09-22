@@ -28,13 +28,13 @@ export default async function AccountPage({ searchParams }: { searchParams: Prom
 
   return (
     <div className="space-y-6">
-      <h1 className="font-display text-3xl font-semibold">My account</h1>
+      <h1 className="font-display text-3xl">My account</h1>
       {welcome && <Notice>Welcome to Fairfax Peak, {user.name.split(" ")[0]}! Your account is ready.</Notice>}
 
       <Section title="Profile" description="Only your name and email are required. Your name appears on reviews you write.">
         <ActionForm action={updateProfile} className="space-y-4">
           <div className="flex items-center gap-4">
-            <div className="flex h-16 w-16 items-center justify-center overflow-hidden rounded-full bg-pine-100 text-xl font-semibold text-pine-800">
+            <div className="flex h-16 w-16 items-center justify-center overflow-hidden rounded-full bg-brand-100 text-xl font-semibold text-brand-800">
               {user.avatarUrl ? (
                 // eslint-disable-next-line @next/next/no-img-element
                 <img src={user.avatarUrl} alt="" className="h-full w-full object-cover" />
@@ -78,7 +78,7 @@ export default async function AccountPage({ searchParams }: { searchParams: Prom
                   </Link>
                   {offer.endsAt && <span className="text-xs text-stone-500"> · ends {formatDate(offer.endsAt)}</span>}
                 </div>
-                {offer.code && <code className="rounded-lg bg-pine-50 px-3 py-1 font-mono font-bold text-pine-900">{offer.code}</code>}
+                {offer.code && <code className="rounded-lg bg-brand-50 px-3 py-1 font-mono font-bold text-brand-900">{offer.code}</code>}
               </li>
             ))}
           </ul>

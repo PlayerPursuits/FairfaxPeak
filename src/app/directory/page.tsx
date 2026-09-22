@@ -39,7 +39,7 @@ export default async function Directory({ searchParams }: { searchParams: Promis
               <li>
                 <Link
                   href={q ? `/directory?q=${encodeURIComponent(q)}` : "/directory"}
-                  className={`block rounded-lg px-3 py-2 text-sm no-underline ${!category ? "bg-pine-700 text-white" : "text-stone-700 hover:bg-pine-50"}`}
+                  className={`block rounded-lg px-3 py-2 text-sm no-underline ${!category ? "bg-brand-700 text-white" : "text-stone-700 hover:bg-brand-50"}`}
                 >
                   All categories
                 </Link>
@@ -48,7 +48,7 @@ export default async function Directory({ searchParams }: { searchParams: Promis
                 <li key={c.id}>
                   <Link
                     href={`/directory?category=${c.slug}${q ? `&q=${encodeURIComponent(q)}` : ""}`}
-                    className={`block rounded-lg px-3 py-2 text-sm no-underline ${category === c.slug ? "bg-pine-700 text-white" : "text-stone-700 hover:bg-pine-50"}`}
+                    className={`block rounded-lg px-3 py-2 text-sm no-underline ${category === c.slug ? "bg-brand-700 text-white" : "text-stone-700 hover:bg-brand-50"}`}
                   >
                     {c.icon} {c.name}
                   </Link>

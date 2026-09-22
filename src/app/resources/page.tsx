@@ -25,7 +25,7 @@ export default async function ResourcesPage() {
         {resources.length === 0 && <EmptyState title="No resources yet" />}
         {[...groups].map(([category, list]) => (
           <section key={category} className="mb-10">
-            <h2 className="mb-4 font-display text-2xl font-semibold">{category}</h2>
+            <h2 className="mb-4 font-display text-2xl">{category}</h2>
             <ul className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
               {list.map((r) => (
                 <li key={r.id} className="card p-5">

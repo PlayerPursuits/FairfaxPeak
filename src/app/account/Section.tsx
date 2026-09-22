@@ -18,7 +18,7 @@ export function Section({ title, description, children, actions }: { title: stri
 export function Notice({ children, tone = "success" }: { children: ReactNode; tone?: "success" | "warn" }) {
   return (
     <p
-      className={`rounded-xl border px-4 py-3 text-sm ${tone === "success" ? "border-pine-200 bg-pine-50 text-pine-800" : "border-sun-300 bg-sun-100 text-pine-900"}`}
+      className={`rounded-xl border px-4 py-3 text-sm ${tone === "success" ? "border-brand-200 bg-brand-50 text-brand-800" : "border-accent-300 bg-accent-100 text-brand-900"}`}
     >
       {children}
     </p>

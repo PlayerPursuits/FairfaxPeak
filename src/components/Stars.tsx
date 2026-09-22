@@ -4,7 +4,7 @@ export function Stars({ rating, size = "text-base", showValue }: { rating: numbe
     <span className={`inline-flex items-center gap-1 ${size}`} aria-label={rating ? `${rating} out of 5 stars` : "No ratings yet"}>
       <span className="relative inline-block leading-none tracking-tight text-stone-300" aria-hidden>
         ★★★★★
-        <span className="absolute inset-0 overflow-hidden text-sun-500" style={{ width: `${(r / 5) * 100}%` }}>
+        <span className="absolute inset-0 overflow-hidden text-accent-500" style={{ width: `${(r / 5) * 100}%` }}>
           ★★★★★
         </span>
       </span>

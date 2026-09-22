@@ -50,7 +50,7 @@ export function renderDigest(d: Digest, frequency: Frequency, name: string, unsu
   const label = frequency === "DAILY" ? "Daily" : "Weekly";
   const section = (title: string, items: string[]) =>
     items.length
-      ? `<h2 style="font-size:18px;color:#1f4d3a;margin:24px 0 8px">${title}</h2><ul style="padding-left:18px;margin:0">${items.join("")}</ul>`
+      ? `<h2 style="font-size:18px;color:#006596;margin:24px 0 8px">${title}</h2><ul style="padding-left:18px;margin:0">${items.join("")}</ul>`
       : "";
 
   const offers = d.offers.map(
@@ -66,8 +66,10 @@ export function renderDigest(d: Digest, frequency: Frequency, name: string, unsu
       `<li style="margin-bottom:8px"><strong>${esc(e.title)}</strong> — ${formatDateTime(e.startsAt)}${e.location ? ` @ ${esc(e.location)}` : ""} <span style="color:#666">(${esc(e.org.name)})</span></li>`,
   );
 
-  const html = `<div style="font-family:system-ui,sans-serif;max-width:600px;margin:auto;color:#222">
-<h1 style="color:#1f4d3a">${SITE_NAME} ${label}</h1>
+  const html = `<div style="font-family:system-ui,sans-serif;max-width:600px;margin:auto;color:#2c2c2d">
+<div style="height:4px;background:linear-gradient(90deg,#11b365,#07b9e2,#006596)"></div>
+<img src="${appUrl("/brand/logo-horizontal.png")}" alt="${SITE_NAME}" width="260" style="margin:20px 0 4px">
+<h1 style="color:#006596;font-weight:normal">${label} digest</h1>
 <p>Hi ${esc(name)}, here's what's new around ${SITE_NAME}.</p>
 ${section("New special offers", offers)}
 ${section("New local businesses", businesses)}

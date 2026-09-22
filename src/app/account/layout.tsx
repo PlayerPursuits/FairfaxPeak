@@ -28,7 +28,7 @@ export default async function AccountLayout({ children }: { children: React.Reac
         <p className="mb-4 truncate text-sm text-stone-500">{user.email}</p>
         <nav className="flex gap-1 overflow-x-auto lg:flex-col" aria-label="Account">
           {links.map((l) => (
-            <Link key={l.href} href={l.href} className="rounded-lg px-3 py-2 text-sm whitespace-nowrap text-stone-700 no-underline hover:bg-pine-50 hover:text-pine-700">
+            <Link key={l.href} href={l.href} className="rounded-lg px-3 py-2 text-sm whitespace-nowrap text-stone-700 no-underline hover:bg-brand-50 hover:text-brand-700">
               {l.label}
             </Link>
           ))}

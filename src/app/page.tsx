@@ -6,6 +6,7 @@ import { claimedOfferIds, listBusinesses, listLiveOffers, listUpcomingEvents } f
 import { OfferCard } from "@/components/OfferCard";
 import { BusinessCard } from "@/components/BusinessCard";
 import { EventCard } from "@/components/EventCard";
+import { BrandMark } from "@/components/BrandMark";
 
 export const dynamic = "force-dynamic";
 
@@ -23,16 +24,16 @@ export default async function Home() {
   return (
     <>
       {/* Hero */}
-      <section className="relative overflow-hidden bg-pine-800 text-white">
+      <section className="relative overflow-hidden bg-gradient-to-br from-brand-900 via-brand-700 to-brand-600 text-white">
         {community.heroImage && (
           // eslint-disable-next-line @next/next/no-img-element
-          <img src={community.heroImage} alt="" className="absolute inset-0 h-full w-full object-cover opacity-30" />
+          <img src={community.heroImage} alt="" className="absolute inset-0 h-full w-full object-cover opacity-20 mix-blend-luminosity" />
         )}
-        <div className="absolute inset-0 bg-gradient-to-t from-pine-900/80 via-pine-800/40 to-transparent" />
+        <BrandMark className="pointer-events-none absolute -right-24 -bottom-10 hidden h-[26rem] w-auto opacity-25 md:block lg:right-0" />
         <div className="relative container-page py-20 sm:py-28">
-          <p className="text-sm font-semibold tracking-widest text-sun-300 uppercase">Welcome to</p>
-          <h1 className="mt-2 font-display text-5xl font-semibold text-white sm:text-6xl">{community.name}</h1>
-          <p className="mt-4 max-w-xl text-lg text-pine-100">{community.tagline}</p>
+          <p className="text-sm font-semibold tracking-widest text-accent-300 uppercase">Welcome to</p>
+          <h1 className="mt-2 font-display text-5xl tracking-[0.06em] text-white uppercase sm:text-7xl">{community.name}</h1>
+          <p className="mt-4 max-w-xl text-lg text-white/85">{community.tagline}</p>
           <form action="/directory" className="mt-8 flex max-w-xl gap-2 rounded-full bg-white p-1.5 shadow-lg">
             <label htmlFor="hero-q" className="sr-only">
               Search local businesses
@@ -59,8 +60,8 @@ export default async function Home() {
       <section className="container-page py-14">
         <div className="flex items-end justify-between gap-4">
           <div>
-            <p className="text-sm font-semibold tracking-wide text-pine-600 uppercase">Fresh deals</p>
-            <h2 className="font-display text-3xl font-semibold">Recently added special offers</h2>
+            <p className="text-sm font-semibold tracking-wide text-brand-600 uppercase">Fresh deals</p>
+            <h2 className="font-display text-3xl">Recently added special offers</h2>
           </div>
           <Link href="/offers" className="hidden text-sm font-semibold sm:block">
             All offers →
@@ -76,9 +77,9 @@ export default async function Home() {
           <p className="mt-6 text-stone-600">No offers yet — check back soon!</p>
         )}
         {!user && (
-          <div className="mt-8 flex flex-col items-start justify-between gap-4 rounded-2xl bg-sun-100 p-6 sm:flex-row sm:items-center">
+          <div className="mt-8 flex flex-col items-start justify-between gap-4 rounded-2xl bg-accent-100 p-6 sm:flex-row sm:items-center">
             <div>
-              <p className="font-semibold text-pine-900">Unlock members-only offers</p>
+              <p className="font-semibold text-brand-900">Unlock members-only offers</p>
               <p className="text-sm text-stone-700">Create a free resident account to claim exclusive deals and leave reviews.</p>
             </div>
             <Link href="/register?type=PERSONAL" className="btn-primary">
@@ -93,8 +94,8 @@ export default async function Home() {
         <div className="container-page">
           <div className="grid gap-10 lg:grid-cols-5">
             <div className="lg:col-span-2">
-              <p className="text-sm font-semibold tracking-wide text-pine-600 uppercase">About the area</p>
-              <h2 className="font-display text-3xl font-semibold">Life in {community.name}</h2>
+              <p className="text-sm font-semibold tracking-wide text-brand-600 uppercase">About the area</p>
+              <h2 className="font-display text-3xl">Life in {community.name}</h2>
               <div className="prose-plain mt-4 text-stone-600">
                 {community.description.split(/\n\n+/).map((p, i) => (
                   <p key={i}>{p}</p>
@@ -126,10 +127,10 @@ export default async function Home() {
 
       {/* Categories */}
       <section className="container-page py-14">
-        <h2 className="font-display text-3xl font-semibold">Browse by category</h2>
+        <h2 className="font-display text-3xl">Browse by category</h2>
         <div className="mt-6 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
           {categories.map((c) => (
-            <Link key={c.id} href={`/directory?category=${c.slug}`} className="card flex items-center gap-3 p-4 text-inherit no-underline hover:border-pine-300 hover:bg-pine-50">
+            <Link key={c.id} href={`/directory?category=${c.slug}`} className="card flex items-center gap-3 p-4 text-inherit no-underline hover:border-brand-300 hover:bg-brand-50">
               <span className="text-2xl">{c.icon}</span>
               <span>
                 <span className="block font-semibold">{c.name}</span>
@@ -144,7 +145,7 @@ export default async function Home() {
       <section className="container-page grid gap-10 pb-6 lg:grid-cols-3">
         <div className="lg:col-span-2">
           <div className="flex items-end justify-between">
-            <h2 className="font-display text-2xl font-semibold">New in the directory</h2>
+            <h2 className="font-display text-2xl">New in the directory</h2>
             <Link href="/directory" className="text-sm font-semibold">
               See all →
             </Link>
@@ -157,7 +158,7 @@ export default async function Home() {
         </div>
         <div>
           <div className="flex items-end justify-between">
-            <h2 className="font-display text-2xl font-semibold">Upcoming events</h2>
+            <h2 className="font-display text-2xl">Upcoming events</h2>
             <Link href="/events" className="text-sm font-semibold">
               Calendar →
             </Link>
@@ -170,10 +171,10 @@ export default async function Home() {
 
       {/* Business CTA */}
       <section className="container-page mt-14">
-        <div className="grid gap-6 rounded-3xl bg-pine-700 p-8 text-white sm:p-12 lg:grid-cols-3 lg:items-center">
+        <div className="grid gap-6 rounded-3xl bg-gradient-to-br from-brand-700 to-brand-600 p-8 text-white sm:p-12 lg:grid-cols-3 lg:items-center">
           <div className="lg:col-span-2">
-            <h2 className="font-display text-3xl font-semibold text-white">Own a business in {community.name}?</h2>
-            <p className="mt-2 text-pine-100">
+            <h2 className="font-display text-3xl text-white">Own a business in {community.name}?</h2>
+            <p className="mt-2 text-brand-100">
               Get a full profile with photos, reviews, directions, and coupons that reach your neighbors every day — $20/month or $200/year.
             </p>
           </div>

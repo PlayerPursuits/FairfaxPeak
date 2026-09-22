@@ -13,7 +13,7 @@ export default async function LoginPage({ searchParams }: { searchParams: Promis
   return (
     <div className="container-page flex justify-center py-16">
       <div className="card w-full max-w-md p-8">
-        <h1 className="font-display text-3xl font-semibold">Welcome back</h1>
+        <h1 className="font-display text-3xl">Welcome back</h1>
         <p className="mt-1 text-sm text-stone-600">Sign in to your Fairfax Peak account.</p>
         <ActionForm action={login} className="mt-6 space-y-4">
           <input type="hidden" name="next" value={next ?? ""} />

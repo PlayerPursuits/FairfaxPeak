@@ -18,11 +18,11 @@ export function RegisterForm({ initialType, categories, next }: { initialType: R
           {ACCOUNT_TYPES.map((t) => (
             <label
               key={t.role}
-              className={`cursor-pointer rounded-xl border-2 p-4 transition ${role === t.role ? "border-pine-600 bg-pine-50" : "border-stone-200 hover:border-pine-300"}`}
+              className={`cursor-pointer rounded-xl border-2 p-4 transition ${role === t.role ? "border-brand-600 bg-brand-50" : "border-stone-200 hover:border-brand-300"}`}
             >
               <input type="radio" name="roleChoice" value={t.role} checked={role === t.role} onChange={() => setRole(t.role)} className="sr-only" />
               <span className="block font-semibold">{t.title}</span>
-              <span className="block text-xs font-semibold text-pine-700">{t.price}</span>
+              <span className="block text-xs font-semibold text-brand-700">{t.price}</span>
               <span className="mt-1 block text-xs text-stone-600">{t.blurb}</span>
             </label>
           ))}
@@ -59,7 +59,7 @@ export function RegisterForm({ initialType, categories, next }: { initialType: R
         </Field>
 
         {role === "BUSINESS" && (
-          <p className="rounded-xl bg-sun-100 px-4 py-3 text-sm text-pine-900">
+          <p className="rounded-xl bg-accent-100 px-4 py-3 text-sm text-brand-900">
             Next you’ll choose a membership plan — <strong>$20/month</strong> or <strong>$200/year</strong>. Your listing goes live once your membership is active.
           </p>
         )}

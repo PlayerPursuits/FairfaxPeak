@@ -53,13 +53,13 @@ export default async function BusinessPage({ params }: { params: Promise<{ slug:
   return (
     <>
       {isOwner && b.subscriptionStatus !== "ACTIVE" && (
-        <div className="bg-sun-100 py-3 text-center text-sm text-pine-900">
+        <div className="bg-accent-100 py-3 text-center text-sm text-brand-900">
           This is a preview. Your listing isn’t public yet — <Link href="/account/billing">activate your membership</Link>.
         </div>
       )}
       <section className="border-b border-stone-200 bg-white">
         <div className="container-page flex flex-col gap-6 py-10 sm:flex-row sm:items-center">
-          <div className="flex h-24 w-24 shrink-0 items-center justify-center overflow-hidden rounded-2xl bg-pine-700 text-4xl text-white shadow">
+          <div className="flex h-24 w-24 shrink-0 items-center justify-center overflow-hidden rounded-2xl bg-brand-700 text-4xl text-white shadow">
             {b.logoUrl ? (
               // eslint-disable-next-line @next/next/no-img-element
               <img src={b.logoUrl} alt={`${b.name} logo`} className="h-full w-full object-cover" />
@@ -73,7 +73,7 @@ export default async function BusinessPage({ params }: { params: Promise<{ slug:
                 {b.category.icon} {b.category.name}
               </Link>
             )}
-            <h1 className="font-display text-4xl font-semibold">{b.name}</h1>
+            <h1 className="font-display text-4xl">{b.name}</h1>
             {b.tagline && <p className="mt-1 text-lg text-stone-600">{b.tagline}</p>}
             <div className="mt-2 flex items-center gap-2">
               <Stars rating={rating} showValue />
@@ -106,7 +106,7 @@ export default async function BusinessPage({ params }: { params: Promise<{ slug:
         <div className="space-y-12 lg:col-span-2">
           {b.offers.length > 0 && (
             <section>
-              <h2 className="font-display text-2xl font-semibold">Special offers</h2>
+              <h2 className="font-display text-2xl">Special offers</h2>
               <div className="mt-4 grid gap-4 sm:grid-cols-2">
                 {b.offers.map((o) => (
                   <OfferCard key={o.id} offer={o} signedIn={!!user} claimed={claimed.has(o.id)} back={back} />
@@ -116,13 +116,13 @@ export default async function BusinessPage({ params }: { params: Promise<{ slug:
           )}
 
           <section>
-            <h2 className="font-display text-2xl font-semibold">About</h2>
+            <h2 className="font-display text-2xl">About</h2>
             <div className="prose-plain mt-3 whitespace-pre-line text-stone-700">{b.description || "No description yet."}</div>
           </section>
 
           {b.images.length > 0 && (
             <section>
-              <h2 className="font-display text-2xl font-semibold">Gallery</h2>
+              <h2 className="font-display text-2xl">Gallery</h2>
               <div className="mt-4">
                 <Gallery images={b.images} name={b.name} />
               </div>
@@ -130,7 +130,7 @@ export default async function BusinessPage({ params }: { params: Promise<{ slug:
           )}
 
           <section id="reviews" className="scroll-mt-20">
-            <h2 className="font-display text-2xl font-semibold">Reviews</h2>
+            <h2 className="font-display text-2xl">Reviews</h2>
             <div className="mt-4 card p-6">
               {!user ? (
                 <p className="text-sm text-stone-700">
@@ -151,7 +151,7 @@ export default async function BusinessPage({ params }: { params: Promise<{ slug:
                 <li key={r.id} className="card p-5">
                   <div className="flex items-start justify-between gap-4">
                     <div className="flex items-center gap-3">
-                      <div className="flex h-10 w-10 items-center justify-center overflow-hidden rounded-full bg-pine-100 font-semibold text-pine-800">
+                      <div className="flex h-10 w-10 items-center justify-center overflow-hidden rounded-full bg-brand-100 font-semibold text-brand-800">
                         {r.user.avatarUrl ? (
                           // eslint-disable-next-line @next/next/no-img-element
                           <img src={r.user.avatarUrl} alt="" className="h-full w-full object-cover" />

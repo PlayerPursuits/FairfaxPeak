@@ -16,7 +16,7 @@ export default async function CivicResources({ searchParams }: { searchParams: P
   return (
     <div className="space-y-6">
       <div className="flex flex-wrap items-center justify-between gap-3">
-        <h1 className="font-display text-3xl font-semibold">Resources</h1>
+        <h1 className="font-display text-3xl">Resources</h1>
         <Link href="/account/civic/resources/new" className="btn-primary">
           + New resource
         </Link>
@@ -29,7 +29,7 @@ export default async function CivicResources({ searchParams }: { searchParams: P
           {resources.map((r) => (
             <li key={r.id} className="card flex flex-wrap items-center justify-between gap-4 p-5">
               <div className="min-w-0">
-                {r.category && <p className="text-xs font-semibold text-pine-600 uppercase">{r.category}</p>}
+                {r.category && <p className="text-xs font-semibold text-brand-600 uppercase">{r.category}</p>}
                 <p className="font-semibold">{r.title}</p>
                 {r.url && <p className="truncate text-xs text-stone-500">{r.url}</p>}
               </div>

@@ -22,7 +22,7 @@ export default async function EventsPage() {
         {events.length === 0 && <EmptyState title="No upcoming events">Check back soon.</EmptyState>}
         {[...byMonth].map(([month, list]) => (
           <section key={month} className="mb-10">
-            <h2 className="mb-4 font-display text-2xl font-semibold">{month}</h2>
+            <h2 className="mb-4 font-display text-2xl">{month}</h2>
             <div className="space-y-4">
               {list.map((e) => (
                 <EventCard key={e.id} e={e} />

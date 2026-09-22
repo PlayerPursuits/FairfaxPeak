@@ -17,7 +17,7 @@ export default async function RegisterPage({ searchParams }: { searchParams: Pro
   return (
     <div className="container-page flex justify-center py-16">
       <div className="card w-full max-w-2xl p-8">
-        <h1 className="font-display text-3xl font-semibold">Join Fairfax Peak</h1>
+        <h1 className="font-display text-3xl">Join Fairfax Peak</h1>
         <p className="mt-1 mb-6 text-sm text-stone-600">
           Browsing is always free and open. An account lets you review, claim members-only offers, or list your organization.
         </p>

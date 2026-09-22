@@ -21,7 +21,7 @@ export default async function BusinessDashboard() {
   return (
     <div className="space-y-6">
       <div className="flex flex-wrap items-center justify-between gap-3">
-        <h1 className="font-display text-3xl font-semibold">{b.name}</h1>
+        <h1 className="font-display text-3xl">{b.name}</h1>
         <Link href={`/business/${b.slug}`} className="btn-outline btn-sm">
           View public listing →
         </Link>
@@ -35,7 +35,7 @@ export default async function BusinessDashboard() {
       <Section title="Business details" description="This information appears on your public profile.">
         <ActionForm action={updateBusinessProfile} className="space-y-4">
           <div className="flex items-center gap-4">
-            <div className="flex h-16 w-16 items-center justify-center overflow-hidden rounded-xl bg-pine-700 text-xl text-white">
+            <div className="flex h-16 w-16 items-center justify-center overflow-hidden rounded-xl bg-brand-700 text-xl text-white">
               {b.logoUrl ? (
                 // eslint-disable-next-line @next/next/no-img-element
                 <img src={b.logoUrl} alt="" className="h-full w-full object-cover" />

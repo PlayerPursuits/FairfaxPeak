@@ -22,8 +22,8 @@ export default async function CivicPage() {
         ) : (
           <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
             {orgs.map((o) => (
-              <Link key={o.id} href={`/civic/${o.slug}`} className="card flex gap-4 p-5 text-inherit no-underline hover:border-pine-300 hover:shadow-md">
-                <div className="flex h-14 w-14 shrink-0 items-center justify-center overflow-hidden rounded-xl bg-pine-100 text-2xl">
+              <Link key={o.id} href={`/civic/${o.slug}`} className="card flex gap-4 p-5 text-inherit no-underline hover:border-brand-300 hover:shadow-md">
+                <div className="flex h-14 w-14 shrink-0 items-center justify-center overflow-hidden rounded-xl bg-brand-100 text-2xl">
                   {o.logoUrl ? (
                     // eslint-disable-next-line @next/next/no-img-element
                     <img src={o.logoUrl} alt="" className="h-full w-full object-cover" />

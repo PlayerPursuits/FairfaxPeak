@@ -26,7 +26,7 @@ export default async function CivicDashboard({ searchParams }: { searchParams: P
   return (
     <div className="space-y-6">
       <div className="flex flex-wrap items-center justify-between gap-3">
-        <h1 className="font-display text-3xl font-semibold">{org.name}</h1>
+        <h1 className="font-display text-3xl">{org.name}</h1>
         <Link href={`/civic/${org.slug}`} className="btn-outline btn-sm">
           View public page →
         </Link>
@@ -34,12 +34,12 @@ export default async function CivicDashboard({ searchParams }: { searchParams: P
       {welcome && <Notice>Welcome! Your civic organization is listed for free. Complete your profile below.</Notice>}
 
       <div className="grid gap-4 sm:grid-cols-2">
-        <Link href="/account/civic/events" className="card p-5 text-inherit no-underline hover:border-pine-300">
-          <p className="text-3xl font-bold text-pine-700">{org._count.events}</p>
+        <Link href="/account/civic/events" className="card p-5 text-inherit no-underline hover:border-brand-300">
+          <p className="text-3xl font-bold text-brand-700">{org._count.events}</p>
           <p className="text-sm text-stone-600">Upcoming events · Manage →</p>
         </Link>
-        <Link href="/account/civic/resources" className="card p-5 text-inherit no-underline hover:border-pine-300">
-          <p className="text-3xl font-bold text-pine-700">{org._count.resources}</p>
+        <Link href="/account/civic/resources" className="card p-5 text-inherit no-underline hover:border-brand-300">
+          <p className="text-3xl font-bold text-brand-700">{org._count.resources}</p>
           <p className="text-sm text-stone-600">Resources · Manage →</p>
         </Link>
       </div>
@@ -48,7 +48,7 @@ export default async function CivicDashboard({ searchParams }: { searchParams: P
         <Section title="Organization overview">
           <div className="space-y-4">
             <div className="flex items-center gap-4">
-              <div className="flex h-16 w-16 items-center justify-center overflow-hidden rounded-xl bg-pine-100 text-2xl">
+              <div className="flex h-16 w-16 items-center justify-center overflow-hidden rounded-xl bg-brand-100 text-2xl">
                 {org.logoUrl ? (
                   // eslint-disable-next-line @next/next/no-img-element
                   <img src={org.logoUrl} alt="" className="h-full w-full object-cover" />

@@ -14,7 +14,7 @@ export const metadata: Metadata = { title: "Coupons & offers" };
 function status(o: { startsAt: Date; endsAt: Date | null }, now: Date) {
   if (o.startsAt > now) return { label: "Scheduled", cls: "bg-sky-100 text-sky-800" };
   if (o.endsAt && o.endsAt < now) return { label: "Expired", cls: "bg-stone-100 text-stone-600" };
-  return { label: "Live", cls: "bg-pine-100 text-pine-800" };
+  return { label: "Live", cls: "bg-brand-100 text-brand-800" };
 }
 
 export default async function OffersDashboard({ searchParams }: { searchParams: Promise<{ saved?: string }> }) {
@@ -30,7 +30,7 @@ export default async function OffersDashboard({ searchParams }: { searchParams: 
   return (
     <div className="space-y-6">
       <div className="flex flex-wrap items-center justify-between gap-3">
-        <h1 className="font-display text-3xl font-semibold">Coupons & offers</h1>
+        <h1 className="font-display text-3xl">Coupons & offers</h1>
         <Link href="/account/business/offers/new" className="btn-primary">
           + New offer
         </Link>
@@ -52,8 +52,8 @@ export default async function OffersDashboard({ searchParams }: { searchParams: 
                 <div className="min-w-0">
                   <div className="flex flex-wrap items-center gap-2">
                     <span className={`badge ${s.cls}`}>{s.label}</span>
-                    {o.exclusive && <span className="badge bg-pine-700 text-white">Members only</span>}
-                    {o.discount && <span className="badge bg-sun-100 text-pine-900">{o.discount}</span>}
+                    {o.exclusive && <span className="badge bg-brand-700 text-white">Members only</span>}
+                    {o.discount && <span className="badge bg-accent-100 text-brand-900">{o.discount}</span>}
                   </div>
                   <p className="mt-1 font-semibold">{o.title}</p>
                   <p className="text-xs text-stone-500">

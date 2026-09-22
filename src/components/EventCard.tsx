@@ -16,9 +16,9 @@ export function EventCard({ e, compact }: { e: Event; compact?: boolean }) {
   const d = new Date(e.startsAt);
   return (
     <article className="card flex gap-4 p-4">
-      <div className="flex h-16 w-16 shrink-0 flex-col items-center justify-center rounded-xl bg-pine-700 text-white">
+      <div className="flex h-16 w-16 shrink-0 flex-col items-center justify-center rounded-xl bg-brand-700 text-white">
         <span className="text-xs font-semibold uppercase">{d.toLocaleDateString("en-US", { month: "short" })}</span>
-        <span className="font-display text-2xl leading-none font-bold">{d.getDate()}</span>
+        <span className="font-display text-2xl leading-none">{d.getDate()}</span>
       </div>
       <div className="min-w-0">
         <h3 className="font-semibold">{e.title}</h3>

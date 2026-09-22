@@ -29,7 +29,7 @@ export function Gallery({ images, name }: { images: Image[]; name: string }) {
             key={img.id}
             type="button"
             onClick={() => setOpen(i)}
-            className="group relative aspect-[4/3] overflow-hidden rounded-xl bg-stone-100 focus:outline-none focus-visible:ring-2 focus-visible:ring-pine-500"
+            className="group relative aspect-[4/3] overflow-hidden rounded-xl bg-stone-100 focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-500"
           >
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img src={img.url} alt={img.caption ?? `${name} photo ${i + 1}`} className="h-full w-full object-cover transition group-hover:scale-105" />

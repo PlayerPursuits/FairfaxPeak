@@ -46,7 +46,7 @@ export default async function BillingPage({
 
   return (
     <div className="space-y-6">
-      <h1 className="font-display text-3xl font-semibold">Membership & billing</h1>
+      <h1 className="font-display text-3xl">Membership & billing</h1>
       {sp.welcome && <Notice>Your account is created! Choose a membership plan to publish {b.name} in the directory.</Notice>}
       {sp.success && active && (
         <Notice>
@@ -64,7 +64,7 @@ export default async function BillingPage({
         <dl className="grid gap-4 sm:grid-cols-3">
           <div>
             <dt className="text-xs text-stone-500 uppercase">Status</dt>
-            <dd className={`font-semibold ${active ? "text-pine-700" : "text-clay-500"}`}>{STATUS_LABEL[b.subscriptionStatus] ?? b.subscriptionStatus}</dd>
+            <dd className={`font-semibold ${active ? "text-brand-700" : "text-red-600"}`}>{STATUS_LABEL[b.subscriptionStatus] ?? b.subscriptionStatus}</dd>
           </div>
           <div>
             <dt className="text-xs text-stone-500 uppercase">Plan</dt>
@@ -99,13 +99,13 @@ export default async function BillingPage({
           {(Object.keys(PLANS) as (keyof typeof PLANS)[]).map((key) => {
             const p = PLANS[key];
             return (
-              <form key={key} action={startCheckout} className={`card flex flex-col p-6 ${key === "YEARLY" ? "border-2 border-pine-600" : ""}`}>
+              <form key={key} action={startCheckout} className={`card flex flex-col p-6 ${key === "YEARLY" ? "border-2 border-brand-600" : ""}`}>
                 <input type="hidden" name="plan" value={key} />
                 <div className="flex items-center justify-between">
                   <h2 className="text-lg font-semibold">{p.label}</h2>
-                  {key === "YEARLY" && <span className="badge bg-sun-400 text-pine-900">2 months free</span>}
+                  {key === "YEARLY" && <span className="badge bg-accent-400 text-brand-900">2 months free</span>}
                 </div>
-                <p className="mt-2 font-display text-4xl font-bold text-pine-800">
+                <p className="mt-2 font-display text-4xl text-brand-800">
                   ${p.amountCents / 100}
                   <span className="text-base font-normal text-stone-500">/{p.interval}</span>
                 </p>

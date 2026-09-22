@@ -13,13 +13,9 @@ const NAV = [
 
 export function Logo() {
   return (
-    <Link href="/" className="flex items-center gap-2 text-pine-800 no-underline">
-      <svg viewBox="0 0 32 32" className="h-8 w-8" aria-hidden>
-        <circle cx="16" cy="16" r="16" className="fill-pine-700" />
-        <circle cx="22" cy="10" r="3.5" className="fill-sun-400" />
-        <path d="M4 25 L13 12 L18 19 L21 15 L28 25 Z" className="fill-pine-100" />
-      </svg>
-      <span className="font-display text-xl font-semibold tracking-tight">{SITE_NAME}</span>
+    <Link href="/" className="flex shrink-0 items-center no-underline" aria-label={`${SITE_NAME} home`}>
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img src="/brand/logo-horizontal.png" alt={SITE_NAME} width={773} height={114} className="h-6 w-auto sm:h-8" />
     </Link>
   );
 }
@@ -27,12 +23,13 @@ export function Logo() {
 export async function Header() {
   const user = await getCurrentUser();
   return (
-    <header className="sticky top-0 z-40 border-b border-stone-200 bg-white/90 backdrop-blur">
+    <header className="sticky top-0 z-40 border-b border-stone-200 bg-white/95 backdrop-blur">
+      <div className="h-1 bg-gradient-to-r from-fp-green via-fp-cyan to-fp-blue" aria-hidden />
       <div className="container-page flex h-16 items-center justify-between gap-4">
         <Logo />
         <nav className="hidden items-center gap-1 md:flex" aria-label="Main">
           {NAV.map((n) => (
-            <Link key={n.href} href={n.href} className="rounded-full px-3 py-2 text-sm font-medium text-stone-700 no-underline hover:bg-pine-50 hover:text-pine-700">
+            <Link key={n.href} href={n.href} className="rounded-full px-3 py-2 text-sm font-medium text-stone-700 no-underline hover:bg-brand-50 hover:text-brand-700">
               {n.label}
             </Link>
           ))}
@@ -44,12 +41,12 @@ export async function Header() {
                 {user.name.split(" ")[0]}’s account
               </Link>
               <form action={logout}>
-                <button className="btn-sm btn text-stone-600 hover:text-pine-700">Sign out</button>
+                <button className="btn-sm btn text-stone-600 hover:text-brand-700">Sign out</button>
               </form>
             </>
           ) : (
             <>
-              <Link href="/login" className="btn-sm btn text-stone-700 no-underline hover:text-pine-700">
+              <Link href="/login" className="btn-sm btn hidden text-stone-700 no-underline hover:text-brand-700 sm:inline-flex">
                 Sign in
               </Link>
               <Link href="/register" className="btn-primary btn-sm">
@@ -62,8 +59,8 @@ export async function Header() {
               ☰
             </summary>
             <nav className="card absolute right-0 mt-2 flex w-48 flex-col p-2" aria-label="Mobile">
-              {[...NAV, ...(user ? [{ href: "/account", label: "My account" }] : [])].map((n) => (
-                <Link key={n.href} href={n.href} className="rounded-lg px-3 py-2 text-sm text-stone-700 no-underline hover:bg-pine-50">
+              {[...NAV, user ? { href: "/account", label: "My account" } : { href: "/login", label: "Sign in" }].map((n) => (
+                <Link key={n.href} href={n.href} className="rounded-lg px-3 py-2 text-sm text-stone-700 no-underline hover:bg-brand-50">
                   {n.label}
                 </Link>
               ))}
