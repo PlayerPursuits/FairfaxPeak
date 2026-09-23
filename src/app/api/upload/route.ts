@@ -1,7 +1,7 @@
 import { handleUpload, type HandleUploadBody } from "@vercel/blob/client";
 import { NextResponse } from "next/server";
 import { getCurrentUser } from "@/lib/session";
-import { blobEnabled, IMAGE_TYPES, MAX_IMAGE_BYTES } from "@/lib/uploads";
+import { blobEnabled, blobToken, IMAGE_TYPES, MAX_IMAGE_BYTES } from "@/lib/uploads";
 
 /** Issues short-lived tokens so signed-in users can upload images straight to Vercel Blob. */
 export async function POST(request: Request) {
@@ -9,6 +9,7 @@ export async function POST(request: Request) {
   const body = (await request.json()) as HandleUploadBody;
   try {
     const result = await handleUpload({
+      token: blobToken,
       body,
       request,
       onBeforeGenerateToken: async () => {

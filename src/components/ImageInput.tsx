@@ -68,7 +68,12 @@ export function ImageInput({
       setStatus(`${done.length} image${done.length > 1 ? "s" : ""} ready — save to apply.`);
     } catch (err) {
       setStatus(null);
-      setError((err as Error).message || "Upload failed. Please try again.");
+      const message = (err as Error).message || "";
+      setError(
+        /private/i.test(message)
+          ? "Photo storage is set to Private. It needs a Public Blob store so photos can be shown on the site."
+          : message || "Upload failed. Please try again.",
+      );
       e.target.value = "";
     }
   }
