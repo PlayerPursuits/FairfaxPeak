@@ -55,6 +55,8 @@ model User {
   avatarUrl        String?
   newsletter       String    @default("NONE")
   lastNewsletterAt DateTime?
+  // Fictional demo account (see src/lib/demo.ts); removed with its content in one step.
+  isDemo           Boolean   @default(false)
   createdAt        DateTime  @default(now())
   updatedAt        DateTime  @updatedAt
 

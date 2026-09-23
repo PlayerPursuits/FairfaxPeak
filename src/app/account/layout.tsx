@@ -3,6 +3,10 @@ import { requireUser } from "@/lib/session";
 
 const LINKS: Record<string, { href: string; label: string }[]> = {
   PERSONAL: [{ href: "/account", label: "Profile & newsletter" }],
+  ADMIN: [
+    { href: "/account", label: "Profile & newsletter" },
+    { href: "/account/admin", label: "Admin & demo data" },
+  ],
   BUSINESS: [
     { href: "/account/business", label: "Business profile" },
     { href: "/account/business/offers", label: "Coupons & offers" },
