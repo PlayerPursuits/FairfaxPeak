@@ -1,0 +1,109 @@
+@import "tailwindcss";
+
+@theme {
+  /* Fairfax Peak brand palette */
+  --color-fp-blue: #006596;
+  --color-fp-green: #11b365;
+  --color-fp-charcoal: #4d4d4f;
+  --color-fp-cyan: #07b9e2;
+  --color-fp-teal: #008981;
+  --color-fp-gray: #7f7f7f;
+  --color-fp-silver: #dddddd;
+  --color-fp-mist: #eeeeee;
+  --color-fp-ink: #2c2c2d;
+
+  /* Primary (blue) scale built around #006596 */
+  --color-brand-50: #eaf4f9;
+  --color-brand-100: #d3e7f1;
+  --color-brand-200: #a7cfe3;
+  --color-brand-300: #6fb1d1;
+  --color-brand-500: #07b9e2;
+  --color-brand-600: #008981;
+  --color-brand-700: #006596;
+  --color-brand-800: #00537b;
+  --color-brand-900: #003d5b;
+
+  /* Accent (green) scale built around #11b365 */
+  --color-accent-100: #e5f7ee;
+  --color-accent-300: #8fe0b8;
+  --color-accent-400: #11b365;
+  --color-accent-500: #0f9f5a;
+
+  /* Neutrals mapped to the secondary grays and body text */
+  --color-stone-25: #f8f8f8;
+  --color-stone-50: #f4f4f4;
+  --color-stone-100: #eeeeee;
+  --color-stone-200: #dddddd;
+  --color-stone-300: #c8c8c8;
+  --color-stone-400: #a3a3a3;
+  --color-stone-500: #7f7f7f;
+  --color-stone-600: #636365;
+  --color-stone-700: #4d4d4f;
+  --color-stone-800: #2c2c2d;
+  --color-stone-900: #2c2c2d;
+
+  --font-sans: var(--font-inter), "Inter", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --font-display: var(--font-marcellus), "Marcellus", "Optima", ui-serif, Georgia, serif;
+}
+
+@layer base {
+  body {
+    @apply bg-stone-25 text-stone-800 antialiased;
+  }
+  h1, h2, h3 {
+    @apply text-stone-900;
+  }
+  a {
+    @apply text-brand-700;
+  }
+}
+
+@utility container-page {
+    @apply mx-auto w-full max-w-6xl px-4 sm:px-6;
+}
+
+@utility card {
+    @apply rounded-2xl border border-stone-200 bg-white shadow-sm;
+}
+
+@utility btn {
+    @apply inline-flex items-center justify-center gap-2 rounded-full px-5 py-2.5 text-sm font-semibold no-underline transition focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-500 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-60;
+}
+
+@utility btn-primary {
+    @apply btn bg-brand-700 text-white hover:bg-brand-800;
+}
+
+@utility btn-accent {
+    @apply btn bg-accent-400 text-brand-900 hover:bg-accent-500;
+}
+
+@utility btn-outline {
+    @apply btn border border-stone-300 bg-white text-stone-800 hover:border-brand-500 hover:text-brand-700;
+}
+
+@utility btn-danger {
+    @apply btn border border-red-200 bg-white text-red-700 hover:bg-red-50;
+}
+
+@utility btn-sm {
+    @apply px-3.5 py-1.5 text-xs;
+}
+
+@utility input {
+    @apply block w-full rounded-xl border border-stone-300 bg-white px-3.5 py-2.5 text-sm text-stone-900 shadow-sm placeholder:text-stone-400 focus:border-brand-500 focus:ring-2 focus:ring-brand-200 focus:outline-none;
+}
+
+@utility label {
+    @apply mb-1.5 block text-sm font-medium text-stone-700;
+}
+
+@utility badge {
+    @apply inline-flex items-center gap-1 rounded-full px-2.5 py-0.5 text-xs font-semibold;
+}
+
+@layer components {
+  .prose-plain p + p {
+    @apply mt-3;
+  }
+}
