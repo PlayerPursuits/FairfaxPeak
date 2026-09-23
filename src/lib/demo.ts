@@ -324,6 +324,7 @@ export async function loadDemoData(db: PrismaClient, password: string) {
             street: b.street,
             ...town,
             hours: b.hours,
+            coverUrl: `/seed/photo-${b.palette}-1.svg`,
             subscriptionStatus: "ACTIVE",
             plan: bi % 2 ? "YEARLY" : "MONTHLY",
             currentPeriodEnd: periodEnd,

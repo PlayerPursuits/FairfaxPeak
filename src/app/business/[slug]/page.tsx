@@ -57,6 +57,12 @@ export default async function BusinessPage({ params }: { params: Promise<{ slug:
           This is a preview. Your listing isn’t public yet — <Link href="/account/billing">activate your membership</Link>.
         </div>
       )}
+      {b.coverUrl && (
+        <div className="h-48 w-full overflow-hidden bg-stone-200 sm:h-64 lg:h-80">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src={b.coverUrl} alt={`${b.name} banner`} className="h-full w-full object-cover" />
+        </div>
+      )}
       <section className="border-b border-stone-200 bg-white">
         <div className="container-page flex flex-col gap-6 py-10 sm:flex-row sm:items-center">
           <div className="flex h-24 w-24 shrink-0 items-center justify-center overflow-hidden rounded-2xl bg-brand-700 text-4xl text-white shadow">

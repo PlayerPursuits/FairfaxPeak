@@ -2,6 +2,7 @@ import Link from "next/link";
 import type { Metadata } from "next";
 import { db } from "@/lib/db";
 import { EmptyState, PageHeader } from "@/components/PageHeader";
+import { T } from "@/components/T";
 
 export const metadata: Metadata = { title: "Community Resources" };
 export const dynamic = "force-dynamic";
@@ -18,8 +19,8 @@ export default async function ResourcesPage() {
   }
   return (
     <>
-      <PageHeader eyebrow="Community resources" title="Local services & information">
-        Helpful links and services shared by Fairfax Peak civic and government organizations.
+      <PageHeader eyebrow={<T k="resources.eyebrow">Community resources</T>} title={<T k="resources.title">Local services & information</T>}>
+        <T k="resources.intro">Helpful links and services shared by Fairfax Peak civic and government organizations.</T>
       </PageHeader>
       <div className="container-page py-10">
         {resources.length === 0 && <EmptyState title="No resources yet" />}

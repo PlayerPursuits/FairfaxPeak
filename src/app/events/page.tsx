@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { listUpcomingEvents } from "@/lib/queries";
 import { EventCard } from "@/components/EventCard";
 import { EmptyState, PageHeader } from "@/components/PageHeader";
+import { T } from "@/components/T";
 
 export const metadata: Metadata = { title: "Community Events" };
 export const dynamic = "force-dynamic";
@@ -15,8 +16,8 @@ export default async function EventsPage() {
   }
   return (
     <>
-      <PageHeader eyebrow="Community calendar" title="Upcoming events">
-        Meetings, festivals, clean-ups, and more — posted by Fairfax Peak civic organizations.
+      <PageHeader eyebrow={<T k="events.eyebrow">Community calendar</T>} title={<T k="events.title">Upcoming events</T>}>
+        <T k="events.intro">Meetings, festivals, clean-ups, and more — posted by Fairfax Peak civic organizations.</T>
       </PageHeader>
       <div className="container-page max-w-3xl py-10">
         {events.length === 0 && <EmptyState title="No upcoming events">Check back soon.</EmptyState>}

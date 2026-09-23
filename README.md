@@ -61,7 +61,7 @@ Without `SMTP_HOST`, emails are written to `./.outbox/` so you can inspect them.
 
 1. **Import the repo:** at [vercel.com/new](https://vercel.com/new), import `PlayerPursuits/FairfaxPeak`. Name the project `fairfax-peak`. The Next.js defaults are correct; don't change the build settings.
 2. **Add a database:** in the project, go to **Storage → Create → Neon (Postgres)** and connect it to all environments. This sets `DATABASE_URL`.
-3. **Add image storage:** go to **Storage → Create → Blob** and connect it. This sets `BLOB_READ_WRITE_TOKEN`.
+3. **Add image storage:** go to **Storage → Create → Blob**, choose **Public** access, and connect it to Production and Preview with the prefix `BLOB`.
 4. **Environment variables** (**Settings → Environment Variables**):
 
    | Name | Value |
@@ -82,11 +82,13 @@ After that, every push to the production branch redeploys automatically, and oth
 **Creating an admin:** register normally, then in the Neon console's SQL editor run
 `UPDATE "User" SET role = 'ADMIN' WHERE email = 'you@example.com';`
 
+**Editing site text:** admins get an **✎ Edit text** switch in the header. With it on, every editable piece of text has a dashed outline: page headings and intros, home page sections, the community tagline and "Life in Fairfax Peak" text, "About the area" cards, menu labels, the footer and the join page. Click one to change it; changes go live when you save, and **Reset to original** restores the built-in wording. Edited text is stored in the `SiteText` table. To make more text editable, wrap it in `<T k="unique.key">Default text</T>`.
+
 **Demo data on the live site:** sign in as an admin and open **My account → Admin & demo data**. Choose a password for the demo accounts and click **Load demo data**. This adds fictional residents, businesses (with offers, photos and reviews) and civic organizations without touching real members. Click **Remove demo data** before launch to delete all of it in one step. Demo accounts are flagged with `User.isDemo`.
 
 **Schema changes:** edit `prisma/schema.prisma`, then run `npm run db:migrate -- --name what_changed` locally and commit the new folder in `prisma/migrations`. The next deploy applies it.
 
 ## Notes
 
-- **Images:** on Vercel, photos upload straight from the browser to Blob storage through `/api/upload`, which avoids Vercel's 4.5 MB request limit. Only signed-in users can upload; files must be JPG, PNG, WebP or GIF up to 5 MB, and forms accept only links to this project's own Blob store. Locally, without `BLOB_READ_WRITE_TOKEN`, files are saved to `public/uploads`.
+- **Images:** photos are shrunk in the browser (longest side 2000 px) before upload, keeping each form post under Vercel's 4.5 MB request limit. The server then saves them to Vercel Blob. Both kinds of Blob connection work, whatever prefix was used: a read-write token (`*_READ_WRITE_TOKEN`) or a store ID with Vercel's built-in sign-in (`*_STORE_ID`). The store must be **Public**. Locally, with no Blob store connected, files are saved to `public/uploads`.
 - **Maps:** the Google Maps embed and directions links need no API key.

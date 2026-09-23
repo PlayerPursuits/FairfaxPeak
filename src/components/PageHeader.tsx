@@ -1,6 +1,6 @@
 import type { ReactNode } from "react";
 
-export function PageHeader({ eyebrow, title, children }: { eyebrow?: string; title: string; children?: ReactNode }) {
+export function PageHeader({ eyebrow, title, children }: { eyebrow?: ReactNode; title: ReactNode; children?: ReactNode }) {
   return (
     <div className="border-b border-stone-200 bg-gradient-to-b from-brand-50 to-stone-25">
       <div className="container-page py-10 sm:py-14">

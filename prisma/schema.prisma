@@ -99,6 +99,8 @@ model Business {
   zip                  String?
   hours                String?
   logoUrl              String?
+  // Wide banner shown on directory tiles and the top of the profile page.
+  coverUrl             String?
   subscriptionStatus   String    @default("INACTIVE")
   plan                 String?
   stripeCustomerId     String?   @unique
@@ -228,4 +230,13 @@ model Resource {
   url         String?
   category    String?
   createdAt   DateTime @default(now())
+}
+
+// Admin-edited site copy. Each row overrides the default text for one key
+// (e.g. "home.offers.title"); deleting the row restores the default.
+model SiteText {
+  key       String   @id
+  value     String
+  updatedAt DateTime @updatedAt
+  updatedBy String?
 }

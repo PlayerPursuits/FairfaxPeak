@@ -4,6 +4,7 @@ import { getCurrentUser } from "@/lib/session";
 import { claimedOfferIds, listLiveOffers } from "@/lib/queries";
 import { OfferCard } from "@/components/OfferCard";
 import { EmptyState, PageHeader } from "@/components/PageHeader";
+import { T } from "@/components/T";
 
 export const metadata: Metadata = { title: "Special Offers" };
 export const dynamic = "force-dynamic";
@@ -16,8 +17,8 @@ export default async function OffersPage({ searchParams }: { searchParams: Promi
 
   return (
     <>
-      <PageHeader eyebrow="Special offers" title="Deals from your neighbors">
-        Coupons and specials from Fairfax Peak member businesses. Offers marked <strong>Members only</strong> require a free resident account.
+      <PageHeader eyebrow={<T k="offers.eyebrow">Special offers</T>} title={<T k="offers.title">Deals from your neighbors</T>}>
+        <T k="offers.intro">Coupons and specials from Fairfax Peak member businesses. Offers marked Members only require a free resident account.</T>
       </PageHeader>
       <div className="container-page py-10">
         <div className="mb-6 flex gap-2">

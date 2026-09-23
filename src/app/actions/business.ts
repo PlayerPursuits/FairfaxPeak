@@ -76,6 +76,16 @@ export async function updateBusinessProfile(_: FormState, fd: FormData): Promise
     await deleteImage(business.logoUrl);
   }
 
+  let coverUrl: string | undefined;
+  try {
+    coverUrl = await imageFromForm(fd, "cover");
+  } catch (e) {
+    if (e instanceof UploadError) return { fieldErrors: { cover: e.message } };
+    throw e;
+  }
+  const removeCover = !coverUrl && fd.get("removeCover") === "on";
+  if (coverUrl || removeCover) await deleteImage(business.coverUrl);
+
   const slug = name !== business.name ? await uniqueSlug(name, "business", business.id) : business.slug;
   await db.business.update({
     where: { id: business.id },
@@ -86,6 +96,7 @@ export async function updateBusinessProfile(_: FormState, fd: FormData): Promise
       website: normalizeUrl(website),
       ...nullify(rest),
       ...(logoUrl && { logoUrl }),
+      ...(coverUrl ? { coverUrl } : removeCover ? { coverUrl: null } : {}),
     },
   });
   revalidateBusiness(business.slug);

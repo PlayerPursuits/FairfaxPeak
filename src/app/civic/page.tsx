@@ -2,6 +2,7 @@ import Link from "next/link";
 import type { Metadata } from "next";
 import { db } from "@/lib/db";
 import { EmptyState, PageHeader } from "@/components/PageHeader";
+import { T } from "@/components/T";
 
 export const metadata: Metadata = { title: "Civic & Local Government" };
 export const dynamic = "force-dynamic";
@@ -13,8 +14,8 @@ export default async function CivicPage() {
   });
   return (
     <>
-      <PageHeader eyebrow="Civic & local government" title="Community organizations">
-        Local government offices, schools, libraries, and civic groups serving Fairfax Peak.
+      <PageHeader eyebrow={<T k="civic.eyebrow">Civic & local government</T>} title={<T k="civic.title">Community organizations</T>}>
+        <T k="civic.intro">Local government offices, schools, libraries, and civic groups serving Fairfax Peak.</T>
       </PageHeader>
       <div className="container-page py-10">
         {orgs.length === 0 ? (
