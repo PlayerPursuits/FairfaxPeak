@@ -4,22 +4,27 @@ import path from "node:path";
 import { randomUUID } from "node:crypto";
 import { del, put } from "@vercel/blob";
 
-// Images go to Vercel Blob when BLOB_READ_WRITE_TOKEN is set (production),
-// otherwise to public/uploads on local disk (development).
+// Images go to Vercel Blob in production and to public/uploads on local disk
+// in development. The browser shrinks photos before submitting (see
+// <ImageInput>), which keeps form posts under Vercel's 4.5 MB request limit.
 //
-// In production the browser uploads straight to Blob (see /api/upload and
-// <ImageInput>), because Vercel caps request bodies at 4.5 MB. Forms then
-// submit the resulting URLs, which `acceptImageUrl` checks before saving.
+// Vercel connects a Blob store in one of two ways, depending on when it was
+// created:
+//   - a read-write token: <PREFIX>_READ_WRITE_TOKEN = vercel_blob_rw_…
+//   - a store ID plus Vercel's built-in OIDC sign-in: <PREFIX>_STORE_ID = store_…
+// Both are supported, whatever prefix was chosen when connecting.
 
-/**
- * The Blob store token. Vercel names it <PREFIX>_READ_WRITE_TOKEN after the
- * prefix chosen when the store was connected, so accept any prefix.
- */
-export const blobToken =
-  process.env.BLOB_READ_WRITE_TOKEN ||
-  Object.entries(process.env).find(([k, v]) => k.endsWith("READ_WRITE_TOKEN") && v?.startsWith("vercel_blob_rw_"))?.[1];
+function findEnv(suffix: string, valuePrefix: string): string | undefined {
+  return Object.entries(process.env).find(([k, v]) => k.endsWith(suffix) && v?.startsWith(valuePrefix))?.[1];
+}
 
-export const blobEnabled = Boolean(blobToken);
+const blobToken = process.env.BLOB_READ_WRITE_TOKEN || findEnv("READ_WRITE_TOKEN", "vercel_blob_rw_");
+const blobStoreId = process.env.BLOB_STORE_ID || findEnv("STORE_ID", "store_");
+
+export const blobEnabled = Boolean(blobToken || blobStoreId);
+
+/** Credentials for @vercel/blob calls: the token if there is one, otherwise the store ID (OIDC). */
+const blobAuth = blobToken ? { token: blobToken } : { storeId: blobStoreId };
 
 const NOT_CONNECTED =
   "Photo uploads aren't set up yet: connect a Public Blob store to this project in Vercel (Storage → Blob), then redeploy.";
@@ -39,31 +44,22 @@ export function isFile(v: FormDataEntryValue | null): v is File {
   return typeof v === "object" && v !== null && "arrayBuffer" in v && v.size > 0;
 }
 
-// Tokens look like vercel_blob_rw_<storeId>_<secret>; public URLs are served from <storeid>.public.blob.vercel-storage.com.
-const storeId = blobToken?.split("_")[3]?.toLowerCase();
-
 function isBlobUrl(url: string) {
   try {
     const u = new URL(url);
-    return u.protocol === "https:" && u.hostname.endsWith(".public.blob.vercel-storage.com");
+    return u.protocol === "https:" && u.hostname.endsWith(".blob.vercel-storage.com");
   } catch {
     return false;
   }
 }
 
-/** True only for files in this project's own Blob store. */
-function isOwnBlobUrl(url: string) {
-  return isBlobUrl(url) && (!storeId || new URL(url).hostname === `${storeId}.public.blob.vercel-storage.com`);
-}
-
-/** Save an uploaded File (local development, or small server-side uploads). */
 export async function saveImage(file: File): Promise<string> {
   const ext = IMAGE_TYPES[file.type];
   if (!ext) throw new UploadError("Images must be JPG, PNG, WebP, or GIF.");
   if (file.size > MAX_IMAGE_BYTES) throw new UploadError("Images must be 5 MB or smaller.");
   const name = `${randomUUID()}${ext}`;
   if (blobEnabled) {
-    const blob = await put(`uploads/${name}`, file, { access: "public", contentType: file.type, token: blobToken });
+    const blob = await put(`uploads/${name}`, file, { access: "public", contentType: file.type, ...blobAuth });
     return blob.url;
   }
   // Vercel's filesystem is read-only, so local-disk storage can't work there.
@@ -73,26 +69,6 @@ export async function saveImage(file: File): Promise<string> {
   return `/uploads/${name}`;
 }
 
-/** A URL the browser got back from a direct Blob upload. Only our Blob store is accepted. */
-export function acceptImageUrl(url: string): string {
-  if (!blobEnabled) throw new UploadError(NOT_CONNECTED);
-  if (!isOwnBlobUrl(url)) throw new UploadError("Image upload failed. Please try again.");
-  return url;
-}
-
-/**
- * Read one image field from a form: a direct-upload URL (`<name>Url`) or a
- * File (`<name>`). Returns the stored URL, or undefined if nothing was chosen.
- */
-export async function imageFromForm(fd: FormData, name: string): Promise<string | undefined> {
-  return friendly(async () => {
-    const url = fd.get(`${name}Url`);
-    if (typeof url === "string" && url) return acceptImageUrl(url);
-    const file = fd.get(name);
-    return isFile(file) ? saveImage(file) : undefined;
-  });
-}
-
 /** Turn unexpected storage failures into a message the form can show, and log the details. */
 async function friendly<T>(fn: () => Promise<T>): Promise<T> {
   try {
@@ -100,33 +76,38 @@ async function friendly<T>(fn: () => Promise<T>): Promise<T> {
   } catch (e) {
     if (e instanceof UploadError) throw e;
     console.error("upload failed", e);
+    const message = e instanceof Error ? e.message : "";
+    if (/private/i.test(message)) {
+      throw new UploadError("Photo storage is set to Private. It needs a Public Blob store so photos can be shown on the site.");
+    }
     throw new UploadError("The image couldn't be saved. Please try again, or try a different image.");
   }
 }
 
-/** All images from a multi-image field, in the same two forms as `imageFromForm`. */
-export async function imagesFromForm(fd: FormData, name: string): Promise<string[]> {
-  return friendly(() => collectImages(fd, name));
+/** The stored URL for an image field, or undefined if no file was chosen. */
+export async function imageFromForm(fd: FormData, name: string): Promise<string | undefined> {
+  const file = fd.get(name);
+  return isFile(file) ? friendly(() => saveImage(file)) : undefined;
 }
 
-async function collectImages(fd: FormData, name: string): Promise<string[]> {
-  const urls = fd.getAll(`${name}Url`).filter((v): v is string => typeof v === "string" && v !== "");
-  if (urls.length) return urls.map(acceptImageUrl);
+/** Stored URLs for every file in a multi-image field. */
+export async function imagesFromForm(fd: FormData, name: string): Promise<string[]> {
   const files = fd.getAll(name).filter(isFile);
-  const out: string[] = [];
-  for (const f of files) out.push(await saveImage(f));
-  return out;
+  return friendly(async () => {
+    const out: string[] = [];
+    for (const f of files) out.push(await saveImage(f));
+    return out;
+  });
 }
 
 export function countImages(fd: FormData, name: string): number {
-  const urls = fd.getAll(`${name}Url`).filter((v) => typeof v === "string" && v !== "").length;
-  return urls || fd.getAll(name).filter(isFile).length;
+  return fd.getAll(name).filter(isFile).length;
 }
 
 export async function deleteImage(url: string | null | undefined) {
   if (!url) return;
   if (isBlobUrl(url)) {
-    if (blobEnabled) await del(url, { token: blobToken }).catch(() => {});
+    if (blobEnabled) await del(url, blobAuth).catch((e) => console.error("could not delete image", e));
     return;
   }
   if (!url.startsWith("/uploads/")) return;

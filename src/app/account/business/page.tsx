@@ -7,7 +7,6 @@ import { deleteGalleryImage, updateBusinessProfile, updateGalleryImage, uploadGa
 import { ActionForm, ConfirmButton, Field, SubmitButton } from "@/components/form";
 import { AddressFields } from "@/components/AddressFields";
 import { ImageInput } from "@/components/ImageInput";
-import { blobEnabled } from "@/lib/uploads";
 import { Notice, Section } from "../Section";
 
 export const metadata: Metadata = { title: "Business profile" };
@@ -45,7 +44,7 @@ export default async function BusinessDashboard() {
                 b.name[0]
               )}
             </div>
-            <ImageInput name="logo" label="Logo" direct={blobEnabled} className="flex-1" />
+            <ImageInput name="logo" label="Logo" className="flex-1" />
           </div>
           <div className="grid gap-4 sm:grid-cols-2">
             <Field name="name" label="Business name" defaultValue={b.name} required />
@@ -78,7 +77,7 @@ export default async function BusinessDashboard() {
 
       <Section title="Image gallery" description={`${b.images.length} of 24 images · JPG, PNG, WebP or GIF up to 5 MB each`}>
         <ActionForm action={uploadGalleryImages} className="mb-6 flex flex-wrap items-end gap-3" resetOnSuccess>
-          <ImageInput name="images" label="Add photos" multiple direct={blobEnabled} className="flex-1" />
+          <ImageInput name="images" label="Add photos" multiple className="flex-1" />
           <SubmitButton pendingText="Uploading…">Upload</SubmitButton>
         </ActionForm>
         {b.images.length ? (
