@@ -46,6 +46,22 @@ export default async function BusinessDashboard() {
             </div>
             <ImageInput name="logo" label="Logo" className="flex-1" />
           </div>
+          <div className="space-y-2">
+            <div className="flex aspect-[8/3] w-full items-center justify-center overflow-hidden rounded-xl bg-gradient-to-br from-brand-100 to-brand-200 text-sm text-brand-800">
+              {b.coverUrl ? (
+                // eslint-disable-next-line @next/next/no-img-element
+                <img src={b.coverUrl} alt="" className="h-full w-full object-cover" />
+              ) : (
+                "No banner yet — your first gallery photo is used until you add one"
+              )}
+            </div>
+            <ImageInput name="cover" label="Banner image" hint="A wide photo works best, about 1600 × 600 pixels." />
+            {b.coverUrl && (
+              <label className="flex items-center gap-2 text-sm text-stone-700">
+                <input type="checkbox" name="removeCover" className="h-4 w-4 accent-brand-700" /> Remove banner
+              </label>
+            )}
+          </div>
           <div className="grid gap-4 sm:grid-cols-2">
             <Field name="name" label="Business name" defaultValue={b.name} required />
             <Field as="select" name="categoryId" label="Category" defaultValue={b.categoryId ?? ""}>

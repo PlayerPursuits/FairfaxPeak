@@ -99,6 +99,8 @@ model Business {
   zip                  String?
   hours                String?
   logoUrl              String?
+  // Wide banner shown on directory tiles and the top of the profile page.
+  coverUrl             String?
   subscriptionStatus   String    @default("INACTIVE")
   plan                 String?
   stripeCustomerId     String?   @unique

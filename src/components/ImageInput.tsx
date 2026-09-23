@@ -36,7 +36,19 @@ async function shrink(file: File): Promise<File> {
  * Image picker. Chosen photos are shrunk in the browser, then submitted with
  * the form as `<name>` and saved by the server (Vercel Blob in production).
  */
-export function ImageInput({ name, label, multiple, className }: { name: string; label: string; multiple?: boolean; className?: string }) {
+export function ImageInput({
+  name,
+  label,
+  hint,
+  multiple,
+  className,
+}: {
+  name: string;
+  label: string;
+  hint?: string;
+  multiple?: boolean;
+  className?: string;
+}) {
   const serverError = useFieldError(name);
   const [status, setStatus] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -89,6 +101,7 @@ export function ImageInput({ name, label, multiple, className }: { name: string;
         className="input"
         aria-invalid={err ? true : undefined}
       />
+      {hint && !status && !err && <p className="mt-1 text-xs text-stone-500">{hint}</p>}
       {status && !err && <p className="mt-1 text-xs text-brand-700">{status}</p>}
       {err && <p className="mt-1 text-xs font-medium text-red-700">{err}</p>}
     </div>

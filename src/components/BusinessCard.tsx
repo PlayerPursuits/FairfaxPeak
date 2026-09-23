@@ -6,6 +6,7 @@ type Business = {
   name: string;
   tagline: string | null;
   logoUrl: string | null;
+  coverUrl?: string | null;
   city: string | null;
   category: { name: string; icon: string } | null;
   images?: { url: string }[];
@@ -15,7 +16,7 @@ type Business = {
 };
 
 export function BusinessCard({ b }: { b: Business }) {
-  const cover = b.images?.[0]?.url;
+  const cover = b.coverUrl ?? b.images?.[0]?.url;
   return (
     <Link href={`/business/${b.slug}`} className="card group flex h-full flex-col overflow-hidden text-inherit no-underline transition hover:-translate-y-0.5 hover:shadow-md">
       <div className="relative h-36 bg-gradient-to-br from-brand-100 to-brand-200">
@@ -30,7 +31,7 @@ export function BusinessCard({ b }: { b: Business }) {
         ) : null}
       </div>
       <div className="flex flex-1 gap-3 p-4">
-        <div className="-mt-10 flex h-14 w-14 shrink-0 items-center justify-center overflow-hidden rounded-xl border-4 border-white bg-brand-700 text-xl text-white shadow">
+        <div className="relative z-10 -mt-10 flex h-14 w-14 shrink-0 items-center justify-center overflow-hidden rounded-xl border-4 border-white bg-brand-700 text-xl text-white shadow">
           {b.logoUrl ? (
             // eslint-disable-next-line @next/next/no-img-element
             <img src={b.logoUrl} alt="" className="h-full w-full object-cover" />
