@@ -231,3 +231,12 @@ model Resource {
   category    String?
   createdAt   DateTime @default(now())
 }
+
+// Admin-edited site copy. Each row overrides the default text for one key
+// (e.g. "home.offers.title"); deleting the row restores the default.
+model SiteText {
+  key       String   @id
+  value     String
+  updatedAt DateTime @updatedAt
+  updatedBy String?
+}

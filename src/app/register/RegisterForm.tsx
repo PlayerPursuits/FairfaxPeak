@@ -7,7 +7,18 @@ import { ACCOUNT_TYPES, type Role } from "@/lib/constants";
 
 type Category = { id: string; name: string; icon: string };
 
-export function RegisterForm({ initialType, categories, next }: { initialType: Role; categories: Category[]; next?: string }) {
+export function RegisterForm({
+  initialType,
+  categories,
+  next,
+  labels,
+}: {
+  initialType: Role;
+  categories: Category[];
+  next?: string;
+  /** Admin-editable account type title and blurb, rendered on the server. */
+  labels: Record<string, { title: React.ReactNode; blurb: React.ReactNode }>;
+}) {
   const [role, setRole] = useState(initialType);
 
   return (
@@ -21,9 +32,9 @@ export function RegisterForm({ initialType, categories, next }: { initialType: R
               className={`cursor-pointer rounded-xl border-2 p-4 transition ${role === t.role ? "border-brand-600 bg-brand-50" : "border-stone-200 hover:border-brand-300"}`}
             >
               <input type="radio" name="roleChoice" value={t.role} checked={role === t.role} onChange={() => setRole(t.role)} className="sr-only" />
-              <span className="block font-semibold">{t.title}</span>
+              <span className="block font-semibold">{labels[t.role]?.title ?? t.title}</span>
               <span className="block text-xs font-semibold text-brand-700">{t.price}</span>
-              <span className="mt-1 block text-xs text-stone-600">{t.blurb}</span>
+              <span className="mt-1 block text-xs text-stone-600">{labels[t.role]?.blurb ?? t.blurb}</span>
             </label>
           ))}
         </div>

@@ -3,6 +3,7 @@ import { Inter, Marcellus } from "next/font/google";
 import "./globals.css";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
+import { EditModeBar } from "@/components/EditModeBar";
 import { SITE_NAME } from "@/lib/constants";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter", display: "swap" });
@@ -20,6 +21,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <Header />
         <main className="flex-1">{children}</main>
         <Footer />
+        <EditModeBar />
       </body>
     </html>
   );

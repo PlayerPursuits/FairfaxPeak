@@ -82,6 +82,8 @@ After that, every push to the production branch redeploys automatically, and oth
 **Creating an admin:** register normally, then in the Neon console's SQL editor run
 `UPDATE "User" SET role = 'ADMIN' WHERE email = 'you@example.com';`
 
+**Editing site text:** admins get an **✎ Edit text** switch in the header. With it on, every editable piece of text has a dashed outline: page headings and intros, home page sections, the community tagline and "Life in Fairfax Peak" text, "About the area" cards, menu labels, the footer and the join page. Click one to change it; changes go live when you save, and **Reset to original** restores the built-in wording. Edited text is stored in the `SiteText` table. To make more text editable, wrap it in `<T k="unique.key">Default text</T>`.
+
 **Demo data on the live site:** sign in as an admin and open **My account → Admin & demo data**. Choose a password for the demo accounts and click **Load demo data**. This adds fictional residents, businesses (with offers, photos and reviews) and civic organizations without touching real members. Click **Remove demo data** before launch to delete all of it in one step. Demo accounts are flagged with `User.isDemo`.
 
 **Schema changes:** edit `prisma/schema.prisma`, then run `npm run db:migrate -- --name what_changed` locally and commit the new folder in `prisma/migrations`. The next deploy applies it.

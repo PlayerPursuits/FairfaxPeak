@@ -4,6 +4,7 @@ import { db } from "@/lib/db";
 import { listBusinesses } from "@/lib/queries";
 import { BusinessCard } from "@/components/BusinessCard";
 import { EmptyState, PageHeader } from "@/components/PageHeader";
+import { T } from "@/components/T";
 
 export const metadata: Metadata = { title: "Business Directory" };
 export const dynamic = "force-dynamic";
@@ -18,8 +19,8 @@ export default async function Directory({ searchParams }: { searchParams: Promis
 
   return (
     <>
-      <PageHeader eyebrow="Business directory" title={active ? `${active.icon} ${active.name}` : "Find local businesses"}>
-        Every business here is a member of the Fairfax Peak community.
+      <PageHeader eyebrow={<T k="directory.eyebrow">Business directory</T>} title={active ? `${active.icon} ${active.name}` : <T k="directory.title">Find local businesses</T>}>
+        <T k="directory.intro">Every business here is a member of the Fairfax Peak community.</T>
       </PageHeader>
       <div className="container-page grid gap-8 py-10 lg:grid-cols-4">
         <aside className="space-y-6">

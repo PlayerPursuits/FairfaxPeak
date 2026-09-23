@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { SITE_NAME } from "@/lib/constants";
 import { BrandMark } from "./BrandMark";
+import { T } from "./T";
 
 export function Footer() {
   return (
@@ -13,38 +14,38 @@ export function Footer() {
             <span className="font-display text-2xl tracking-[0.12em] text-white uppercase">{SITE_NAME}</span>
           </p>
           <p className="mt-2 max-w-sm text-sm text-stone-300">
-            The hyper-local guide to the businesses, organizations, and neighbors that make {SITE_NAME} home.
+            <T k="footer.tagline">The hyper-local guide to the businesses, organizations, and neighbors that make Fairfax Peak home.</T>
           </p>
         </div>
         <div>
-          <p className="text-sm font-semibold text-white">Explore</p>
+          <p className="text-sm font-semibold text-white"><T k="footer.explore">Explore</T></p>
           <ul className="mt-3 space-y-2 text-sm">
             {[
-              ["/directory", "Business directory"],
-              ["/offers", "Special offers"],
-              ["/events", "Community events"],
-              ["/resources", "Local resources"],
-            ].map(([href, label]) => (
+              ["/directory", "Business directory", "footer.link.directory"],
+              ["/offers", "Special offers", "footer.link.offers"],
+              ["/events", "Community events", "footer.link.events"],
+              ["/resources", "Local resources", "footer.link.resources"],
+            ].map(([href, label, key]) => (
               <li key={href}>
                 <Link href={href} className="text-stone-300 no-underline hover:text-white">
-                  {label}
+                  <T k={key}>{label}</T>
                 </Link>
               </li>
             ))}
           </ul>
         </div>
         <div>
-          <p className="text-sm font-semibold text-white">Join</p>
+          <p className="text-sm font-semibold text-white"><T k="footer.join">Join</T></p>
           <ul className="mt-3 space-y-2 text-sm">
             {[
-              ["/register?type=PERSONAL", "Residents (free)"],
-              ["/register?type=BUSINESS", "List your business"],
-              ["/register?type=CIVIC", "Civic organizations (free)"],
-              ["/account", "My account"],
-            ].map(([href, label]) => (
+              ["/register?type=PERSONAL", "Residents (free)", "footer.link.residents"],
+              ["/register?type=BUSINESS", "List your business", "footer.link.business"],
+              ["/register?type=CIVIC", "Civic organizations (free)", "footer.link.civic"],
+              ["/account", "My account", "footer.link.account"],
+            ].map(([href, label, key]) => (
               <li key={href}>
                 <Link href={href} className="text-stone-300 no-underline hover:text-white">
-                  {label}
+                  <T k={key}>{label}</T>
                 </Link>
               </li>
             ))}
@@ -52,7 +53,7 @@ export function Footer() {
         </div>
       </div>
       <div className="border-t border-white/10 py-4 text-center text-xs text-stone-400">
-        © {new Date().getFullYear()} {SITE_NAME}. Made for neighbors, by neighbors.
+        © {new Date().getFullYear()} {SITE_NAME}. <T k="footer.credit">Made for neighbors, by neighbors.</T>
       </div>
     </footer>
   );
